@@ -1,0 +1,4 @@
+com\hrblock\sop\app\util\SOPUtil.class
+com\hrblock\sop\app\controller\SOPController.class
+com\hrblock\sop\app\model\SOPOffice.class
+com\hrblock\sop\app\service\SOPService.class
