@@ -47,8 +47,19 @@ public class SopServiceImpl implements SOPService{
 	/** call to DAO reagrding the details of the warning status details for the office id **/
 	@Override
 	public SOPOffice getWarningDetailsOfOffice(String officeId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		SOPOffice sopOffice = new SOPOffice();
+		sopOffice= sopDao.fetchWarningDetailsOfOffice(officeId);
+		
+		return sopOffice;
+	}
+
+	/** sending data to dao class to store the details of status changed **/
+	@Override
+	public String savingWarningStatus(String officeId, String warningName, String date, String omWarningStatus,
+			String exception, String exceptionReason) {
+		String savingResult=sopDao.savingWarningStatus(officeId, warningName, date, omWarningStatus, exception, exceptionReason);
+		return savingResult;
 	}
 
 }

@@ -10,4 +10,5 @@ public interface SopDAO {
 
 	public List<SopMainDetailsBean> getSopMainDetails(List<Integer> districtList);
 	public SOPOffice fetchWarningDetailsOfOffice(String officeId);
+	public String savingWarningStatus(String officeId,String warningName,String date,String omWarningStatus,String exception,String exceptionReason);
 }

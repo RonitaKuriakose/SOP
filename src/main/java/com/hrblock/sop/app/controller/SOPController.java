@@ -67,7 +67,17 @@ public class SOPController {
 		model.addAttribute("verbal", sopOffice.getVerbalWarning());
 		model.addAttribute("written", sopOffice.getWrittenWarning());
 		model.addAttribute("finals", sopOffice.getFinalWarning());
-		model.addAttribute("descision", sopOffice.getDecision());
+		model.addAttribute("decision", sopOffice.getDecision());
+		return "sop_warning";
+	}
+	
+	@RequestMapping(value="/warningStatus", method= RequestMethod.POST)
+	public String savingWarningStatus(@RequestParam("officeId") String officeId,@RequestParam("warningName")String warningName,
+			@RequestParam("date")String date,@RequestParam("omWarningStatus")String omWarningStatus,
+			@RequestParam("exception") String exception,@RequestParam("exceptionReason")String exceptionReason,ModelMap model) {
+		
+		String result= service.savingWarningStatus(officeId, warningName, date, omWarningStatus, exception, exceptionReason);
+		model.addAttribute("officeNumber", officeId);
 		return "sop_warning";
 	}
 }
