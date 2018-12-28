@@ -1,0 +1,233 @@
+@charset "UTF-8";
+/*@font-face {
+    font-family: 'font1';
+    src:url(../font/open.ttf);
+}*/
+
+body{
+    font-family: 'Noto Sans', sans-serif;
+    background: #f1f0f0;
+
+}
+.m0p0{
+    padding: 0px;
+    margin: 0px;
+}
+
+.header_12 .logo{
+
+    width: 140px;
+    margin: auto;
+    margin-top: 15px; 
+}
+
+.header_12{  
+    text-align: center;
+    background: #7cc242;
+    box-shadow: -2px 4px 20px 0 rgba(0,0,0,.14), -1px 9px 10px -5px rgb(124, 194, 66);
+    height: 55px;
+
+}
+.sop_fluid{
+    background: #fff;
+    box-shadow: 1px 2px 20px 0 #afacac;
+}
+.sop_container{
+    width: 90%;
+    margin: auto;
+}
+.sop_hed_12 .userh3 i.fa{
+    background-color: #fff;
+    border-color: #999;
+    box-shadow: 4px 8px 11px 0 #ccc;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    text-align: center;
+    padding-top: 12px;
+    color: #ddd;
+    font-size: 16px;
+}
+.sop_hed_12 .userh3 .user_span{
+    font-size: 16px;
+    color: #848484;
+    font-weight: 100;
+}
+.sop_hed_12 .userh3 .logout a:hover{
+    color: #b7b6b6;
+}
+.sop_hed_12 .userh3 .logout a{
+    text-decoration: none !important;
+    color: #7cc242;
+    transition: all 0.6s;
+}
+.sop_hed_12 .userh3 .logout{
+    font-size: 14px;
+    margin-left: 8px;
+}
+.sop_hed_12 .userh3{
+    float: right;
+}
+.sop_hed_12 .hedh3{
+    font-weight: 900;
+    margin-top: 28px;
+    color: #b7b6b6;
+    font-size: 18px;
+}
+.sop_hed_12{
+    padding-top: 8px;
+    padding-bottom: 10px;
+
+}
+
+.bd_fluid{
+    margin-top: 53px;
+}
+#example_wrapper>.row:first-child{
+    display: none;
+}
+#warning_p .dataTables_wrapper>.row:first-child,#warning_p .dataTables_wrapper>.row:last-child{
+    display: none;
+}
+.filter_sel,.search_fil{
+    float: left;
+    width: 150px;
+    margin-left: 8px; 
+}
+.label_filer{
+    float: left;
+    width: 105px;
+    margin-top: 7px;
+    font-size: 14px;;  
+}
+.label_filer2{
+    margin-left: 18px;
+}
+.ser_butt{
+    float: left;
+    margin-top: 3px;
+    font-size: 12px;
+    margin-left: 16px;
+    border: none;
+    padding: 5px 18px;
+    background: #337ab7;
+    color: #fff;
+}
+.bd_fluid .card-header{
+    background: linear-gradient(60deg,#7cc242,#59ab15);
+    padding: 10px 16px;
+    color: #fff;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgb(109, 184, 47);
+    margin-top: -35px;
+    margin-bottom: 35px;
+    border-radius: 2px;
+
+}
+.bd_fluid .card{
+    background: #fff;
+    padding: 20px;
+    margin-top: 35px;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,.14);
+    border-radius: 10px;
+    margin-bottom: 24px;
+}
+#example.dataTable{
+
+    margin-top: 25px !important;
+    margin-bottom: 25px !important; 
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    background-color: #7cc242;
+    border-color: #7cc242;
+}
+
+#warning_p .error_msg{
+    color: red;   
+}
+#warning_p #example_filter>label{
+    display: none;
+}
+#warning_p .new_inp_row_tr th{
+    font-weight: 100;
+}
+#warning_p .new_inp_row_tr{
+    display: none;
+}
+#warning_p .new_inp_row_a {
+    float: right;
+}
+#warning_p .new_inp_row_a i.fa{
+    background: #5bac18;
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    padding-top: 6px;
+    border-radius: 50%;
+    color: #fff;
+}
+#warning_p .icn_oprn i.fa{
+    font-size: 20px;
+}
+#warning_p .card-header{
+    position: relative;
+}
+#warning_p .plus_ahref i.fa{
+
+}
+#warning_p .plus_ahref{
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    background: white;
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    padding-top: 3px;
+    border-radius: 50%;
+    color: #5bac18;
+}
+#warning_p .add_stat_ahref{
+    position: absolute;
+    right: 65px;
+    top: 18px;
+    width: 115px;
+    text-align: center;
+    padding-top: 3px;
+    border-radius: 50%;
+    color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width: 520px) {
+
+
+
+}
+
+@media screen and (max-width: 520px) {
+
+
+
+}
+

@@ -106,10 +106,26 @@ public class SopDAOImpl implements SopDAO {
 			String exception, String exceptionReason) {
 		NamedParameterJdbcTemplate insertionJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
 		String result;
+		int warningStatusId=0;
 		 //Object[] params = new Object[] { officeId, omWarningStatus, warningName, exceptionReason,new Date() };
+		if(omWarningStatus.equalsIgnoreCase("Active")) {
+			warningStatusId=1;
+		}else if(omWarningStatus.equalsIgnoreCase("Confirmed")) {
+			warningStatusId=2;
+		}else if(omWarningStatus.equalsIgnoreCase("Exception")) {
+			warningStatusId=3;
+		}else if(omWarningStatus.equalsIgnoreCase("Received")) {
+			warningStatusId=4;
+		}else if(omWarningStatus.equalsIgnoreCase("Confirmed – Fit for Role")) {
+			warningStatusId=5;
+		}else if(omWarningStatus.equalsIgnoreCase("Confirmed – Termination")) {
+			warningStatusId=6;
+		}else if(omWarningStatus.equalsIgnoreCase("Confirmed – Keep Coaching")) {
+			warningStatusId=7;
+		}
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		 namedParameters.addValue("officeId", Integer.valueOf(officeId));
-		 namedParameters.addValue("omWarningStatus", Integer.valueOf(omWarningStatus));
+		 namedParameters.addValue("omWarningStatus", warningStatusId);
 		 namedParameters.addValue("warningName", Integer.valueOf(warningName));
 		 namedParameters.addValue("exceptionReason", exceptionReason);
 		 namedParameters.addValue("dates", new Date());

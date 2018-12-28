@@ -1,6 +1,5 @@
 package com.hrblock.sop.app.service;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.hrblock.sop.app.dao.SopDAO;
 import com.hrblock.sop.app.model.SOPOffice;
 import com.hrblock.sop.app.model.SopMainDetailsBean;
-import com.hrblock.sop.app.model.WarningStatusDetailsBean;
 
 public class SopServiceImpl implements SOPService{
 

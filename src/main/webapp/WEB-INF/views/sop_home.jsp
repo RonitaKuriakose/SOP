@@ -14,8 +14,10 @@
 <title></title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- <link rel="icon" type="image/icon" href="/images/favicon.ico" /> -->
-<link rel="icon" type="image/icon" href="<c:url value="/resources/css/images/favicon.ico" />" />
-
+<%-- <link rel="icon" type="image/icon" href="<c:url value="/resources/css/images/favicon.ico" />" /> --%>
+<link rel="icon" type="image/icon"
+	href="<c:url value="/resources/css/images/favicon.ico" />" />
+<!-- /SMC/AMS/sop/resources/css/style.css /resources/css/images/favicon.ico -->
 
 
 
@@ -36,9 +38,11 @@
 	src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
 
-
+<!-- /SMC/AMS/sop/resources/css/style.css -->
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/style.css"> --%>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
+<%-- <link rel="stylesheet"
+	href="<c:url value="/SMC/AMS/sop/resources/css/style.css" />"> --%>
 <!-- /style.css -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -54,6 +58,9 @@
 	<header class="header_class">
 		<!--<div class="container">-->
 		<div class="col-sm-12 header_12 m0p0">
+			<%-- <img
+				src="<c:url value="/SMC/AMS/sop/resources/css/images/logo.png" />"
+				class="logo" /> --%>
 			<img src="<c:url value="/resources/css/images/logo.png" />" class="logo" />
 		</div>
 
@@ -66,7 +73,7 @@
 					<div class="col-sm-6">
 						<h3 class="userh3">
 							<i class="fa fa-user" aria-hidden="true"></i> <span
-								class="user_span">Vishnulal UC</span><span class="logout"><a
+								class="user_span">${userName}</span><span class="logout"><a
 								href="javascript:void(0)">Logout</a></span>
 						</h3>
 					</div>
@@ -76,81 +83,6 @@
 		<!--</div>-->
 
 	</header>
-
-
-	<%-- <div class="container-fluid bd_fluid m0p0">
-		<div class="sop_container">
-			<div class="card">
-				<div class="card-header card-header-primary">
-					<h4 class="card-title ">Wireframe</h4>
-					<!--<p class="card-category"> Here is a subtitle for this table</p>-->
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<div class="col-sm-12">
-							<h3 class="label_filer">Filter By:</h3>
-							<select id="category_select"
-								class="filter_sel form-control form-control-sm">
-								<option value="1">Market</option>
-								<option value="2">Region</option>
-								<option value="3">District</option>
-								<option value="4">Office</option>
-								<option value="5">Warning Status</option>
-								<option value="6">Last Updated</option>
-							</select>
-							<h3 class="label_filer label_filer2">Search By:</h3>
-							<input type="text" id="user_search"
-								class="search_fil form-control form-control-sm"
-								placeholder="Search">
-							<button class="ser_butt" id="serach_button" type="button"
-								onclick="SearchItem();">Go</button>
-						</div>
-
-						<table id="sop_table" class="table table-striped table-bordered"
-							style="width: 100%">
-							<thead>
-								<tr>
-									<th>Market</th>
-									<th>Region</th>
-									<th>District</th>
-									<th>Office</th>
-									<th>OM Warning Status</th>
-									<th>Last Updated</th>
-								</tr>
-							</thead>
-							<tbody>
-
-
-
-
-								
-									<c:forEach var="item" items="${jsondata}">
-<tr>
-										<td>${item.market}</td>
-										<td>${item.region}</td>
-										<td>${item.district}</td>
-										<td><a href="/sop/officedetails?officeId=${item.officeId}" >${item.officeId}</a></td>
-										<td>${item.omWarningStatusId}</td>
-										<td>${item.lastUpdated}</td>
-</tr>
-									</c:forEach>
-								
-
-
-
-							</tbody>
-
-						</table>
-					</div>
-				</div>
-			</div>
-
-
-		</div>
-	</div>
- --%>
-
-
 
 	<div class="container-fluid bd_fluid m0p0">
 		<div class="sop_container">
@@ -169,7 +101,7 @@
 								<option value="1">Region</option>
 								<option value="2">District</option>
 								<option value="3">Office</option>
-								<option value="4">Warning Status</option>
+								<option value="4">OM Warning Status</option>
 								<option value="5">Last Updated</option>
 							</select>
 							<h3 class="label_filer label_filer2">Search By:</h3>
@@ -198,8 +130,16 @@
 										<td>${item.market}</td>
 										<td>${item.region}</td>
 										<td>${item.district}</td>
-										<td><a
-											href="/sop/officedetails?officeId=${item.officeId}">${item.officeId}</a></td>
+										<c:choose>
+											<c:when test="${item.omWarningStatusName=='On Path'}">
+												<td>${item.officeId}</td>
+											</c:when>
+											<c:otherwise>
+												<td><a
+													href="/sop/officedetails?officeId=${item.officeId}">${item.officeId}</a></td>
+											</c:otherwise>
+										</c:choose>
+
 										<td>${item.omWarningStatusName}</td>
 										<td>${item.lastUpdated}</td>
 									</tr>
@@ -226,7 +166,42 @@
 
 	<footer>
 
+
 		<script>
+			$(document).ready(function() {
+
+				// DataTable
+				var table = $('#example').DataTable();
+				// Apply the search
+				$('input.serrr').attr("data-id", $("#filter_field").val());
+				$("#filter_field").change(function() {
+
+					$('input.serrr').val("");
+					var ser_str = "";
+					var coloumn_index_ = $('input.serrr').attr("data-id");
+					coloumn_index_ = parseInt(coloumn_index_);
+					var that = table.columns(coloumn_index_);
+					that.search(ser_str).draw();
+
+					$('input.serrr').attr("data-id", $(this).val());
+				});
+
+				$('input.serrr').keyup(function() {
+
+					$("input.serrr").val(this.value.replace(/^ /g, ""));
+
+					var ser_str = this.value;
+					var coloumn_index_ = $('input.serrr').attr("data-id");
+					coloumn_index_ = parseInt(coloumn_index_);
+					var that = table.columns(coloumn_index_);
+					that.search(ser_str).draw();
+
+				});
+
+			});
+		</script>
+
+		<!-- <script>
 			$(document).ready(function() {
 				$('#sop_table').DataTable();
 
@@ -309,7 +284,7 @@
 
              });
 			
-		</script>
+		</script> -->
 
 	</footer>
 
