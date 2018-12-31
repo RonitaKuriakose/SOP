@@ -9,8 +9,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.hrblock.sop.app.model.SOPOffice;
-import com.hrblock.sop.app.model.SopMainDetailsBean;
-import com.hrblock.sop.app.model.WarningStatusDetailsBean;
+import com.hrblock.sop.app.model.SopMainDetails;
+import com.hrblock.sop.app.model.OmWarningStatus;
 import com.hrblock.sop.app.rowmapper.OfficeWarningDetailRowMapper;
 import com.hrblock.sop.app.rowmapper.SopMainDetailRowMapper;
 
@@ -27,14 +27,14 @@ public class SopDAOImpl implements SopDAO {
 	/** fetch office lists from db corresponding to the user details  **/
 	
 	@Override
-	public List<SopMainDetailsBean> getSopMainDetails(List<Integer> districtList) {
+	public List<SopMainDetails> getSopMainDetails(List<Integer> districtList) {
 
 		NamedParameterJdbcTemplate npJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
 
 		MapSqlParameterSource parameters = new MapSqlParameterSource();
 		parameters.addValue("districtlist", districtList);
 
-		List<SopMainDetailsBean> sopMainDetails = npJdbcTemplate.query(getSQL(), parameters,
+		List<SopMainDetails> sopMainDetails = npJdbcTemplate.query(getSQL(), parameters,
 				new SopMainDetailRowMapper());
 		return sopMainDetails;
 	}

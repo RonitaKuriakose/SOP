@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hrblock.sop.app.dao.SopDAO;
 import com.hrblock.sop.app.model.SOPOffice;
-import com.hrblock.sop.app.model.SopMainDetailsBean;
-import com.hrblock.sop.app.model.WarningStatusDetailsBean;
+import com.hrblock.sop.app.model.SopMainDetails;
+import com.hrblock.sop.app.model.OmWarningStatus;
 
 public class SopServiceImpl implements SOPService{
 
@@ -18,10 +18,10 @@ public class SopServiceImpl implements SOPService{
 	
 	/** fetch data from db corresponding to the user details  **/
 	
-	public List<SopMainDetailsBean> getMainInterface(List<Integer> districtList) {
+	public List<SopMainDetails> getMainInterface(List<Integer> districtList) {
 		System.out.println("TestIMPL");
 		
-		List<SopMainDetailsBean> sopMainArray = new ArrayList<SopMainDetailsBean>();
+		List<SopMainDetails> sopMainArray = new ArrayList<SopMainDetails>();
 		sopMainArray = sopDao.getSopMainDetails(districtList);
 		return sopMainArray;
 	}
@@ -29,10 +29,10 @@ public class SopServiceImpl implements SOPService{
 	/** fetch data from db corresponding to the search data from search bar **/
 	
 	@Override
-	public ArrayList<SopMainDetailsBean> getSearchDetails(String filterValue,String searchedValue) {
+	public ArrayList<SopMainDetails> getSearchDetails(String filterValue,String searchedValue) {
 		System.out.println(filterValue + searchedValue);
-		ArrayList<SopMainDetailsBean> sopMainArray = new ArrayList<SopMainDetailsBean>();
-		SopMainDetailsBean sopMainDetailsBean = new SopMainDetailsBean();
+		ArrayList<SopMainDetails> sopMainArray = new ArrayList<SopMainDetails>();
+		SopMainDetails sopMainDetailsBean = new SopMainDetails();
 		sopMainDetailsBean.setMarket("Central");
 		sopMainDetailsBean.setRegion("Chicago/Wisconsin");
 		sopMainDetailsBean.setDistrict("Chicago South, IL");

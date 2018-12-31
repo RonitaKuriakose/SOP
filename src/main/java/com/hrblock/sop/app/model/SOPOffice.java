@@ -10,10 +10,10 @@ private String officeName;
 private Integer omId;
 private String omName;
 
-private List<WarningStatusDetailsBean> verbalWarning;
-private List<WarningStatusDetailsBean> writtenWarning;
-private List<WarningStatusDetailsBean> finalWarning;
-private List<WarningStatusDetailsBean> decision;
+private List<OmWarningStatus> verbalWarning;
+private List<OmWarningStatus> writtenWarning;
+private List<OmWarningStatus> finalWarning;
+private List<OmWarningStatus> decision;
 
 
 public Integer getOfficeID() {
@@ -40,35 +40,35 @@ public void setOmName(String omName) {
 	this.omName = omName;
 }
 
-public List<WarningStatusDetailsBean> getVerbalWarning() {
+public List<OmWarningStatus> getVerbalWarning() {
 	return verbalWarning;
 }
 
-public void setVerbalWarning(List<WarningStatusDetailsBean> verbalWarning) {
+public void setVerbalWarning(List<OmWarningStatus> verbalWarning) {
 	this.verbalWarning = verbalWarning;
 }
 
-public List<WarningStatusDetailsBean> getWrittenWarning() {
+public List<OmWarningStatus> getWrittenWarning() {
 	return writtenWarning;
 }
 
-public void setWrittenWarning(List<WarningStatusDetailsBean> writtenWarning) {
+public void setWrittenWarning(List<OmWarningStatus> writtenWarning) {
 	this.writtenWarning = writtenWarning;
 }
 
-public List<WarningStatusDetailsBean> getFinalWarning() {
+public List<OmWarningStatus> getFinalWarning() {
 	return finalWarning;
 }
 
-public void setFinalWarning(List<WarningStatusDetailsBean> finalWarning) {
+public void setFinalWarning(List<OmWarningStatus> finalWarning) {
 	this.finalWarning = finalWarning;
 }
 
-public List<WarningStatusDetailsBean> getDecision() {
+public List<OmWarningStatus> getDecision() {
 	return decision;
 }
 
-public void setDecision(List<WarningStatusDetailsBean> decision) {
+public void setDecision(List<OmWarningStatus> decision) {
 	this.decision = decision;
 }
 

@@ -1,6 +1,6 @@
 package com.hrblock.sop.app.model;
 
-public class OmWarningStatusBean {
+public class OmWarningStatus {
 	
 	private int omWarningStatusID;
 	private String omWarningstatus;

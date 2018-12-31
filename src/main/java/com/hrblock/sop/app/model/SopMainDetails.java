@@ -2,7 +2,7 @@ package com.hrblock.sop.app.model;
 
 
 
-public class SopMainDetailsBean {
+public class SopMainDetails {
 	
 	private String market;
 	private String region;
@@ -15,8 +15,8 @@ public class SopMainDetailsBean {
 	private int warningStepId;
 	private String warningStepName;
 	private String comments;
-	private OmWarningStatusBean omWarningStatusBean;
-	private WarningStepBean warningStepBean;
+	private OmWarningStatus omWarningStatusBean;
+	private WarningStep warningStepBean;
 	
 	
 	public String getMarket() {
@@ -73,16 +73,16 @@ public class SopMainDetailsBean {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public OmWarningStatusBean getOmWarningStatusBean() {
+	public OmWarningStatus getOmWarningStatusBean() {
 		return omWarningStatusBean;
 	}
-	public void setOmWarningStatusBean(OmWarningStatusBean omWarningStatusBean) {
+	public void setOmWarningStatusBean(OmWarningStatus omWarningStatusBean) {
 		this.omWarningStatusBean = omWarningStatusBean;
 	}
-	public WarningStepBean getWarningStepBean() {
+	public WarningStep getWarningStepBean() {
 		return warningStepBean;
 	}
-	public void setWarningStepBean(WarningStepBean warningStepBean) {
+	public void setWarningStepBean(WarningStep warningStepBean) {
 		this.warningStepBean = warningStepBean;
 	}
 	public String getOmWarningStatusName() {

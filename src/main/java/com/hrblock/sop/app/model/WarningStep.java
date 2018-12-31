@@ -1,6 +1,6 @@
 package com.hrblock.sop.app.model;
 
-public class WarningStepBean {
+public class WarningStep {
 	
 	private int warningStepId;
 	private String warningStep;

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hrblock.sop.app.model.SOPOffice;
-import com.hrblock.sop.app.model.SopMainDetailsBean;
-import com.hrblock.sop.app.model.WarningStatusDetailsBean;
+import com.hrblock.sop.app.model.SopMainDetails;
+import com.hrblock.sop.app.model.OmWarningStatus;
 import com.hrblock.sop.app.service.SOPService;
 
 @Controller
@@ -36,7 +36,7 @@ public class SOPController {
 		districtList.add(15);
 		districtList.add(7);
 		districtList.add(10);
-		List<SopMainDetailsBean> mainList = service.getMainInterface(districtList);
+		List<SopMainDetails> mainList = service.getMainInterface(districtList);
 		model.addAttribute("jsondata", mainList);
 		return "sop_home";
 	}
@@ -52,7 +52,7 @@ public class SOPController {
 	@RequestMapping(value = "/MySearch", method = RequestMethod.GET)
 	public String fetchSopSearchDetails(@RequestParam("filters") String filterValue,
 			@RequestParam("searchVal") String searchedValue, ModelMap model) {
-		ArrayList<SopMainDetailsBean> searchList = service.getSearchDetails(filterValue, searchedValue);
+		ArrayList<SopMainDetails> searchList = service.getSearchDetails(filterValue, searchedValue);
 		model.addAttribute("jsondata", searchList);
 		return "sop_home";
 	}

@@ -1,4 +1,4 @@
-<%@page import="com.hrblock.sop.app.model.SopMainDetailsBean"%>
+<%@page import="com.hrblock.sop.app.model.SopMainDetails"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>

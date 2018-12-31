@@ -1,6 +1,6 @@
 package com.hrblock.sop.app.model;
 
-public class SopAccountHistoryBean {
+public class SopAccountHistory {
 
 	private String market;
 	private String region;
@@ -10,8 +10,8 @@ public class SopAccountHistoryBean {
 	private String date;
 	private int warningStepId;
 	private int userId;
-	private OmWarningStatusBean omWarningStatusBean;
-	private WarningStepBean warningStepBean;
+	private OmWarningStatus omWarningStatusBean;
+	private WarningStep warningStepBean;
 	
 	public String getMarket() {
 		return market;
@@ -61,16 +61,16 @@ public class SopAccountHistoryBean {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public OmWarningStatusBean getOmWarningStatusBean() {
+	public OmWarningStatus getOmWarningStatusBean() {
 		return omWarningStatusBean;
 	}
-	public void setOmWarningStatusBean(OmWarningStatusBean omWarningStatusBean) {
+	public void setOmWarningStatusBean(OmWarningStatus omWarningStatusBean) {
 		this.omWarningStatusBean = omWarningStatusBean;
 	}
-	public WarningStepBean getWarningStepBean() {
+	public WarningStep getWarningStepBean() {
 		return warningStepBean;
 	}
-	public void setWarningStepBean(WarningStepBean warningStepBean) {
+	public void setWarningStepBean(WarningStep warningStepBean) {
 		this.warningStepBean = warningStepBean;
 	}
 	
