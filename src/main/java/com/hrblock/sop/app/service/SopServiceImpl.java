@@ -1,16 +1,18 @@
 package com.hrblock.sop.app.service;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.hrblock.sop.app.dao.SopDAO;
 import com.hrblock.sop.app.model.SOPOffice;
-import com.hrblock.sop.app.model.SopMainDetails;
-import com.hrblock.sop.app.model.OmWarningStatus;
 
+import com.hrblock.sop.app.model.SopMainDetails;
+
+
+@Component
 public class SopServiceImpl implements SOPService{
 
 	@Autowired
@@ -47,8 +49,19 @@ public class SopServiceImpl implements SOPService{
 	/** call to DAO reagrding the details of the warning status details for the office id **/
 	@Override
 	public SOPOffice getWarningDetailsOfOffice(String officeId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		SOPOffice sopOffice = new SOPOffice();
+		sopOffice= sopDao.fetchWarningDetailsOfOffice(officeId);
+		
+		return sopOffice;
+	}
+
+	/** sending data to dao class to store the details of status changed **/
+	@Override
+	public String savingWarningStatus(String officeId, String warningName, String date, String omWarningStatus,
+			String exception, String exceptionReason) {
+		String savingResult=sopDao.savingWarningStatus(officeId, warningName, date, omWarningStatus, exception, exceptionReason);
+		return savingResult;
 	}
 
 }
