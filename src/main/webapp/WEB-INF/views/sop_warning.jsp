@@ -56,7 +56,8 @@
 	<header class="header_class">
 		<!--<div class="container">-->
 		<div class="col-sm-12 header_12 m0p0">
-			<img src="<c:url value="/resources/css/images/logo.png" />" class="logo" />
+			<img src="<c:url value="/resources/css/images/logo.png" />"
+				class="logo" />
 			<!-- /SMC/AMS/sop/resources/css/images/logo.png    /resources/css/images/logo.png -->
 		</div>
 
@@ -86,6 +87,7 @@
 
 			<h4 class="card-title ">Office Name/Number: ${officeNumber}</h4>
 			<h4 class="card-title ">OM Name: ${omName}</h4>
+			<a href="/sop/home" class="back_a">Back</a>
 
 			<c:set var="verbstatus" value="no" scope="page" />
 			<%-- <c:set var="warningName" value="" scope="page" /> --%>
@@ -100,7 +102,7 @@
 						class="fa fa-arrow-up" aria-hidden="true"></i></a>
 					<!--<p class="card-category"> Here is a subtitle for this table</p>-->
 					<%-- <c:set var="warningName" value="1" /> --%>
-				
+
 				</div>
 				<div class="card-body">
 					<form>
@@ -120,36 +122,56 @@
 								</thead>
 								<tbody>
 
-									<c:forEach var="verb" items="${verbal}">
+									<%--Starting Fetching Main Map --%>
+									<c:forEach var="map" items="${sopOfficeDetails}">
+										<!-- Starting Checking map for verbal warning details -->
+										<c:choose>
+											<c:when test="${map.key eq 'verbal'}">
+
+												<%--  <c:set var="verb" value="${map.value}"/> --%>
+
+												<c:forEach var="verb" items="${map.value}">
+
+
+
+													<tr>
+														<td>${verb.date}</td>
+														<td>${verb.omWarningStatus}</td>
+														<c:choose>
+															<c:when test="${verb.omWarningStatus eq 'Confirmed'}">
+																<c:set var="verbstatus" value="yes" />
+															</c:when>
+															<c:otherwise>
+
+															</c:otherwise>
+														</c:choose>
+														<td>${verb.exception}</td>
+														<c:choose>
+															<c:when test="${verb.exception eq 'Yes'}">
+																<td>${verb.exceptionReason}</td>
+															</c:when>
+															<c:otherwise>
+																<td></td>
+															</c:otherwise>
+														</c:choose>
+														<td></td>
+													</tr>
+												</c:forEach>
+
+												<%-- <c:forEach var="warningStatusDetailsBean"
+										items="${map.value}">
 										
-										<%-- <c:set var="warningName" value="${verb.warningName}" /> --%>
-										<tr>
-											<td>${verb.date}</td>
-											<td>${verb.omWarningStatus}</td>
-											<c:choose>
-												<c:when test="${verb.omWarningStatus=='Confirmed'}">
-													<c:set var="verbstatus" value="yes" />
-												</c:when>
-												<c:otherwise>
+										${warningStatusDetailsBean.date}
+										</c:forEach> --%>
 
-												</c:otherwise>
-											</c:choose>
-											<td>${verb.exception}</td>
-
-											<c:choose>
-												<c:when test="${verb.exception=='Yes'}">
-													<td>${verb.exceptionReason}</td>
-												</c:when>
-												<c:otherwise>
-													<td></td>
-												</c:otherwise>
-											</c:choose>
-
-											<td></td>
-										</tr>
+											</c:when>
+										</c:choose>
+										<!-- Ending Checking map for verbal warning details -->
 									</c:forEach>
-
+									<%--Ending Fetching Main Map --%>
 								</tbody>
+
+								<%-- Code for adding new row against verbal warning --%>
 								<tfoot>
 
 									<tr class="new_inp_row_tr">
@@ -162,57 +184,88 @@
 										<th><select class="w_status">
 												<c:choose>
 													<c:when test="${role=='ARC'}">
-														<option value="Received">Received</option>
+														<option value="RECEIVED">RECEIVED</option>
+													</c:when>
+													<c:when test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+														<option value="CONFIRMED">CONFIRMED</option>
+														<option value="EXCEPTION">EXCEPTION</option>
 													</c:when>
 													<c:otherwise>
-														<option value="Active">Active</option>
-														<option value="Confirmed">Confirmed</option>
-														<option value="Exception">Exception</option>
+														<input disabled type="text" value="" class="textbox">
 													</c:otherwise>
 												</c:choose>
 										</select></th>
-										<th><select disabled class="exception">
+										<th><span class="exception">No</span>
+										<!-- <select disabled class="exception">
 												<option value="Yes">Yes</option>
 												<option selected value="No">No</option>
-										</select></th>
+										</select> --></th>
 										<th><textarea style='display: none;' class="reason"></textarea><br>
 											<h6 class="error_msg"></h6></th>
 										<th><a class="save_a icn_oprn" href="javascript:void(0)"><i
 												class="fa fa-floppy-o" aria-hidden="true"></i></a> <a
 											class="delete_a icn_oprn" href="javascript:void(0)"><i
-												class="fa fa-trash" aria-hidden="true"></i></a>
-												
-												<input type="hidden" id="warningName" name="warningName"
-											value="1">
-											</th>
+												class="fa fa-trash" aria-hidden="true"></i></a> <input
+											type="hidden" id="warningName" name="warningName" value="1">
+										</th>
 									</tr>
 								</tfoot>
 							</table>
-							<c:choose>
-								<c:when test="${empty verbal}">
-								</c:when>
-								<c:otherwise>
-									<!-- Condition to check for role and give the permission to add status -->
-									<c:choose>
-										<c:when test="${role=='ARC'}">
 
-											<c:choose>
-												<c:when test="${verbstatus=='yes'}">
-													<a class="new_inp_row_a" href="javascript:void(0)"><i
-														class="fa fa-plus" aria-hidden="true"></i></a>
-												</c:when>
-												<c:otherwise>
-												</c:otherwise>
-											</c:choose>
+							<c:forEach var="map" items="${sopOfficeDetails}">
+								<c:choose>
+									<c:when test="${map.key eq 'verbal'}">
+										<!-- Condition to check for role and give the permission to add status -->
+										<c:set var="verb" value="${map.value}" />
 
-										</c:when>
-										<c:otherwise>
-											<a class="new_inp_row_a" href="javascript:void(0)"><i
-												class="fa fa-plus" aria-hidden="true"></i></a>
-										</c:otherwise>
-									</c:choose>
-								</c:otherwise>
-							</c:choose>
+										<c:forEach var="verb" items="${map.value}" varStatus="loop">
+											<c:if test="${loop.last}">
+												<c:choose>
+
+													<c:when test="${empty verb.date}">
+
+													</c:when>
+													<c:otherwise>
+														<c:choose>
+															<c:when test="${role=='ARC'}">
+
+																<c:choose>
+																	<c:when test="${verbstatus=='yes'}">
+																		<a class="new_inp_row_a" href="javascript:void(0)"><i
+																			class="fa fa-plus" aria-hidden="true"></i></a>
+																	</c:when>
+																	<c:otherwise>
+																	</c:otherwise>
+																</c:choose>
+
+															</c:when>
+															<c:when
+																test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+																<c:choose>
+																	<c:when test="${verbstatus=='yes'}">
+
+																	</c:when>
+																	<c:otherwise>
+																		<a class="new_inp_row_a" href="javascript:void(0)"><i
+																			class="fa fa-plus" aria-hidden="true"></i></a>
+																	</c:otherwise>
+																</c:choose>
+															</c:when>
+															<c:otherwise>
+																<a class="new_inp_row_a" href="javascript:void(0)"><i
+																	class="fa fa-plus" aria-hidden="true"></i></a>
+															</c:otherwise>
+														</c:choose>
+													</c:otherwise>
+												</c:choose>
+											</c:if>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
 
 						</div>
 					</form>
@@ -225,7 +278,7 @@
 						class="fa fa-arrow-down" aria-hidden="true"></i></a>
 					<!--<p class="card-category"> Here is a subtitle for this table</p>-->
 					<%-- <c:set var="warningName" value="2" /> --%>
-					
+
 				</div>
 				<div class="card-body">
 					<form>
@@ -244,34 +297,47 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="verb" items="${written}">
-									
-										<%-- <c:set var="warningName" value="${verb.warningName}" /> --%>
-										<tr>
-											<td>${verb.date}</td>
-											<td>${verb.omWarningStatus}</td>
-											<c:choose>
-												<c:when test="${verb.omWarningStatus=='Confirmed'}">
-													<c:set var="writstatus" value="yes" />
-												</c:when>
-												<c:otherwise>
 
-												</c:otherwise>
-											</c:choose>
-											<td>${verb.exception}</td>
-											<c:choose>
-												<c:when test="${verb.exception=='Yes'}">
-													<td>${verb.exceptionReason}</td>
-												</c:when>
-												<c:otherwise>
-													<td></td>
-												</c:otherwise>
-											</c:choose>
-											<td></td>
-										</tr>
+									<%--Starting Fetching Main Map --%>
+									<c:forEach var="map" items="${sopOfficeDetails}">
+
+										<c:choose>
+											<c:when test="${map.key eq 'written'}">
+
+												<%-- <c:set var="verb" value="${map.value}"/> --%>
+
+												<c:forEach var="verb" items="${map.value}">
+													<tr>
+														<td>${verb.date}</td>
+														<td>${verb.omWarningStatus}</td>
+														<c:choose>
+															<c:when test="${verb.omWarningStatus eq 'Confirmed'}">
+																<c:set var="writstatus" value="yes" />
+															</c:when>
+															<c:otherwise>
+
+															</c:otherwise>
+														</c:choose>
+														<td>${verb.exception}</td>
+														<c:choose>
+															<c:when test="${verb.exception eq 'Yes'}">
+																<td>${verb.exceptionReason}</td>
+															</c:when>
+															<c:otherwise>
+																<td></td>
+															</c:otherwise>
+														</c:choose>
+														<td></td>
+													</tr>
+												</c:forEach>
+											</c:when>
+										</c:choose>
 									</c:forEach>
+									<%--Ending Fetching Main Map --%>
 
 								</tbody>
+
+								<%-- Code for adding new row against written warning --%>
 								<tfoot>
 
 									<tr class="new_inp_row_tr">
@@ -283,57 +349,83 @@
 										<th><select class="w_status">
 												<c:choose>
 													<c:when test="${role=='ARC'}">
-														<option value="Received">Received</option>
+														<option value="RECEIVED">RECEIVED</option>
 													</c:when>
 													<c:otherwise>
-														<option value="Active">Active</option>
-														<option value="Confirmed">Confirmed</option>
-														<option value="Exception">Exception</option>
+														<option value="CONFIRMED">CONFIRMED</option>
+														<option value="EXCEPTION">EXCEPTION</option>
 													</c:otherwise>
 												</c:choose>
 										</select></th>
-										<th><select disabled class="exception">
+										<th><span class="exception">No</span><!-- <select disabled class="exception">
 												<option value="Yes">Yes</option>
 												<option selected value="No">No</option>
-										</select></th>
+										</select> --></th>
 										<th><textarea style='display: none;' class="reason"></textarea><br>
 											<h6 class="error_msg"></h6></th>
 										<th><a class="save_a icn_oprn" href="javascript:void(0)"><i
 												class="fa fa-floppy-o" aria-hidden="true"></i></a> <a
 											class="delete_a icn_oprn" href="javascript:void(0)"><i
-												class="fa fa-trash" aria-hidden="true"></i></a>
-												
-												<input type="hidden" id="warningName" name="warningName"
-											value="2">
-											</th>
+												class="fa fa-trash" aria-hidden="true"></i></a> <input
+											type="hidden" id="warningName" name="warningName" value="2">
+										</th>
 									</tr>
 								</tfoot>
 							</table>
-							<c:choose>
-								<c:when test="${empty written}">
-								</c:when>
-								<c:otherwise>
-									<!-- Condition to check for role and give the permission to add status -->
-									<c:choose>
-										<c:when test="${role=='ARC'}">
 
-											<c:choose>
-												<c:when test="${writstatus=='yes'}">
-													<a class="new_inp_row_a" href="javascript:void(0)"><i
-														class="fa fa-plus" aria-hidden="true"></i></a>
-												</c:when>
-												<c:otherwise>
-												</c:otherwise>
-											</c:choose>
+							<c:forEach var="map" items="${sopOfficeDetails}">
+								<c:choose>
+									<c:when test="${map.key eq 'written'}">
+										<!-- Condition to check for role and give the permission to add status -->
+										<%-- <c:set var="verb" value="${map.value}"/> --%>
+										<c:forEach var="verb" items="${map.value}" varStatus="loop">
+											<c:if test="${loop.last}">
+												<c:choose>
 
-										</c:when>
-										<c:otherwise>
-											<a class="new_inp_row_a" href="javascript:void(0)"><i
-												class="fa fa-plus" aria-hidden="true"></i></a>
-										</c:otherwise>
-									</c:choose>
-								</c:otherwise>
-							</c:choose>
+													<c:when test="${empty verb.date}">
+
+													</c:when>
+													<c:otherwise>
+														<c:choose>
+															<c:when test="${role=='ARC'}">
+
+																<c:choose>
+																	<c:when test="${writstatus=='yes'}">
+																		<a class="new_inp_row_a" href="javascript:void(0)"><i
+																			class="fa fa-plus" aria-hidden="true"></i></a>
+																	</c:when>
+																	<c:otherwise>
+																	</c:otherwise>
+																</c:choose>
+
+															</c:when>
+															<c:when
+																test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+																<c:choose>
+																	<c:when test="${writstatus=='yes'}">
+
+																	</c:when>
+																	<c:otherwise>
+																		<a class="new_inp_row_a" href="javascript:void(0)"><i
+																			class="fa fa-plus" aria-hidden="true"></i></a>
+																	</c:otherwise>
+																</c:choose>
+															</c:when>
+															<c:otherwise>
+																<a class="new_inp_row_a" href="javascript:void(0)"><i
+																	class="fa fa-plus" aria-hidden="true"></i></a>
+															</c:otherwise>
+														</c:choose>
+													</c:otherwise>
+												</c:choose>
+											</c:if>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
 
 						</div>
 					</form>
@@ -363,33 +455,47 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="verb" items="${finals}">
-										<c:set var="warningName" value="${verb.warningName}" />
-										<tr>
-											<td>${verb.date}</td>
-											<td>${verb.omWarningStatus}</td>
-											<c:choose>
-												<c:when test="${verb.omWarningStatus=='Confirmed'}">
-													<c:set var="finalstatus" value="yes" />
-												</c:when>
-												<c:otherwise>
 
-												</c:otherwise>
-											</c:choose>
-											<td>${verb.exception}</td>
-											<c:choose>
-												<c:when test="${verb.exception=='Yes'}">
-													<td>${verb.exceptionReason}</td>
-												</c:when>
-												<c:otherwise>
-													<td></td>
-												</c:otherwise>
-											</c:choose>
-											<td></td>
-										</tr>
+									<%--Starting Fetching Main Map --%>
+									<c:forEach var="map" items="${sopOfficeDetails}">
+
+										<c:choose>
+											<c:when test="${map.key eq 'final'}">
+
+												<%-- <c:set var="verb" value="${map.value}"/> --%>
+												<c:forEach var="verb" items="${map.value}">
+													<tr>
+														<td>${verb.date}</td>
+														<td>${verb.omWarningStatus}</td>
+														<c:choose>
+															<c:when test="${verb.omWarningStatus eq 'Confirmed'}">
+																<c:set var="finalstatus" value="yes" />
+															</c:when>
+															<c:otherwise>
+
+															</c:otherwise>
+														</c:choose>
+														<td>${verb.exception}</td>
+														<c:choose>
+															<c:when test="${verb.exception eq 'Yes'}">
+																<td>${verb.exceptionReason}</td>
+															</c:when>
+															<c:otherwise>
+																<td></td>
+															</c:otherwise>
+														</c:choose>
+														<td></td>
+													</tr>
+												</c:forEach>
+											</c:when>
+										</c:choose>
+
 									</c:forEach>
+									<%--Ending Fetching Main Map --%>
 
 								</tbody>
+
+								<%-- Code for adding new row against final warning --%>
 								<tfoot>
 
 									<tr class="new_inp_row_tr">
@@ -400,59 +506,83 @@
 										<th><select class="w_status">
 												<c:choose>
 													<c:when test="${role=='ARC'}">
-														<option value="Received">Received</option>
+														<option value="RECEIVED">RECEIVED</option>
 													</c:when>
 													<c:otherwise>
-														<option value="Active">Active</option>
-														<option value="Confirmed">Confirmed</option>
-														<option value="Exception">Exception</option>
+														<option value="CONFIRMED">CONFIRMED</option>
+														<option value="EXCEPTION">EXCEPTION</option>
 													</c:otherwise>
 												</c:choose>
 										</select></th>
-										<th><select disabled class="exception">
+										<th><span class="exception">No</span><!-- <select disabled class="exception">
 												<option value="Yes">Yes</option>
 												<option selected value="No">No</option>
-										</select></th>
+										</select> --></th>
 										<th><textarea style='display: none;' class="reason"></textarea><br>
 											<h6 class="error_msg"></h6></th>
 										<th><a class="save_a icn_oprn" href="javascript:void(0)"><i
 												class="fa fa-floppy-o" aria-hidden="true"></i></a> <a
 											class="delete_a icn_oprn" href="javascript:void(0)"><i
-												class="fa fa-trash" aria-hidden="true"></i></a>
-												
-												<input type="hidden" id="warningName" name="warningName"
-											value="3">
-												</th>
+												class="fa fa-trash" aria-hidden="true"></i></a> <input
+											type="hidden" id="warningName" name="warningName" value="3">
+										</th>
 									</tr>
 								</tfoot>
 							</table>
 
-							<c:choose>
-								<c:when test="${empty finals}">
-								</c:when>
-								<c:otherwise>
-									<!-- Condition to check for role and give the permission to add status -->
-									<c:choose>
-										<c:when test="${role=='ARC'}">
+							<c:forEach var="map" items="${sopOfficeDetails}">
+								<c:choose>
+									<c:when test="${map.key eq 'written'}">
+										<!-- Condition to check for role and give the permission to add status -->
+										<%-- <c:set var="verb" value="${map.value}"/> --%>
+										<c:forEach var="verb" items="${map.value}" varStatus="loop">
+											<c:if test="${loop.last}">
+												<c:choose>
 
-											<c:choose>
-												<c:when test="${finalstatus=='yes'}">
-													<a class="new_inp_row_a" href="javascript:void(0)"><i
-														class="fa fa-plus" aria-hidden="true"></i></a>
-												</c:when>
-												<c:otherwise>
-												</c:otherwise>
-											</c:choose>
+													<c:when test="${empty verb.date}">
 
-										</c:when>
-										<c:otherwise>
-											<a class="new_inp_row_a" href="javascript:void(0)"><i
-												class="fa fa-plus" aria-hidden="true"></i></a>
-										</c:otherwise>
-									</c:choose>
-								</c:otherwise>
-							</c:choose>
+													</c:when>
+													<c:otherwise>
+														<c:choose>
+															<c:when test="${role=='ARC'}">
 
+																<c:choose>
+																	<c:when test="${finalstatus=='yes'}">
+																		<a class="new_inp_row_a" href="javascript:void(0)"><i
+																			class="fa fa-plus" aria-hidden="true"></i></a>
+																	</c:when>
+																	<c:otherwise>
+																	</c:otherwise>
+																</c:choose>
+
+															</c:when>
+															<c:when
+																test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+																<c:choose>
+																	<c:when test="${finalstatus=='yes'}">
+
+																	</c:when>
+																	<c:otherwise>
+																		<a class="new_inp_row_a" href="javascript:void(0)"><i
+																			class="fa fa-plus" aria-hidden="true"></i></a>
+																	</c:otherwise>
+																</c:choose>
+															</c:when>
+															<c:otherwise>
+																<a class="new_inp_row_a" href="javascript:void(0)"><i
+																	class="fa fa-plus" aria-hidden="true"></i></a>
+															</c:otherwise>
+														</c:choose>
+													</c:otherwise>
+												</c:choose>
+											</c:if>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
 						</div>
 					</form>
 				</div>
@@ -482,33 +612,46 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="verb" items="${decision}">
-										<c:set var="warningName" value="${verb.warningName}" />
-										<tr>
-											<td>${verb.date}</td>
-											<td>${verb.omWarningStatus}</td>
-											<c:choose>
-												<c:when test="${verb.omWarningStatus=='Confirmed'}">
-													<c:set var="descstatus" value="yes" />
-												</c:when>
-												<c:otherwise>
+									<%--Starting Fetching Main Map --%>
+									<c:forEach var="map" items="${sopOfficeDetails}">
 
-												</c:otherwise>
-											</c:choose>
-											<td>${verb.exception}</td>
-											<c:choose>
-												<c:when test="${verb.exception=='Yes'}">
-													<td>${verb.exceptionReason}</td>
-												</c:when>
-												<c:otherwise>
-													<td></td>
-												</c:otherwise>
-											</c:choose>
-											<td></td>
-										</tr>
+
+										<c:choose>
+											<c:when test="${map.key eq 'decision'}">
+
+												<%-- <c:set var="verb" value="${map.value}"/> --%>
+												<c:forEach var="verb" items="${map.value}">
+													<tr>
+														<td>${verb.date}</td>
+														<td>${verb.omWarningStatus}</td>
+														<c:choose>
+															<c:when test="${verb.omWarningStatus eq 'Confirmed'}">
+																<c:set var="descstatus" value="yes" />
+															</c:when>
+															<c:otherwise>
+
+															</c:otherwise>
+														</c:choose>
+														<td>${verb.exception}</td>
+														<c:choose>
+															<c:when test="${verb.exception eq 'Yes'}">
+																<td>${verb.exceptionReason}</td>
+															</c:when>
+															<c:otherwise>
+																<td></td>
+															</c:otherwise>
+														</c:choose>
+														<td></td>
+													</tr>
+												</c:forEach>
+											</c:when>
+										</c:choose>
+
 									</c:forEach>
-
+									<%--Ending Fetching Main Map --%>
 								</tbody>
+
+								<%-- Code for adding new row against decision warning --%>
 								<tfoot>
 
 									<tr class="new_inp_row_tr">
@@ -519,60 +662,84 @@
 										<th><select class="w_status">
 												<c:choose>
 													<c:when test="${role=='ARC'}">
-														<option value="Received">Received</option>
+														<option value="RECEIVED">RECEIVED</option>
 													</c:when>
 													<c:otherwise>
-														<option value="Active">Active</option>
-														<option value="Confirmed – Fit for Role">Confirmed – Fit for Role</option>
-														<option value="Confirmed – Keep Coaching">Confirmed – Keep Coaching</option>
-														<option value="Confirmed – Termination">Confirmed – Termination</option>
+														<option value="CONFIRM-FIT FOR ROLE">CONFIRM-FIT FOR ROLE</option>
+														<option value="CONFIRM-KEEP COACHING">CONFIRM-KEEP COACHING</option>
+														<option value="CONFIRM-TERMINATION">CONFIRM-TERMINATION</option>
 													</c:otherwise>
 												</c:choose>
 										</select></th>
-										<th><select disabled class="exception">
+										<th><span class="exception">No</span><!-- <select disabled class="exception">
 												<option value="Yes">Yes</option>
 												<option selected value="No">No</option>
-										</select></th>
+										</select> --></th>
 										<th><textarea style='display: none;' class="reason"></textarea><br>
 											<h6 class="error_msg"></h6></th>
 										<th><a class="save_a icn_oprn" href="javascript:void(0)"><i
 												class="fa fa-floppy-o" aria-hidden="true"></i></a> <a
 											class="delete_a icn_oprn" href="javascript:void(0)"><i
-												class="fa fa-trash" aria-hidden="true"></i></a>
-												
-												
-												<input type="hidden" id="warningName" name="warningName"
-											value="4">
-												</th>
+												class="fa fa-trash" aria-hidden="true"></i></a> <input
+											type="hidden" id="warningName" name="warningName" value="4">
+										</th>
 									</tr>
 								</tfoot>
 							</table>
-							<c:choose>
-								<c:when test="${empty decision}">
-								</c:when>
-								<c:otherwise>
-									<!-- Condition to check for role and give the permission to add status -->
-									<c:choose>
-										<c:when test="${role=='ARC'}">
 
-											<c:choose>
-												<c:when test="${descstatus=='yes'}">
-													<a class="new_inp_row_a" href="javascript:void(0)"><i
-														class="fa fa-plus" aria-hidden="true"></i></a>
-												</c:when>
-												<c:otherwise>
-												</c:otherwise>
-											</c:choose>
+							<c:forEach var="map" items="${sopOfficeDetails}">
+								<c:choose>
+									<c:when test="${map.key eq 'written'}">
+										<!-- Condition to check for role and give the permission to add status -->
+										<%-- <c:set var="verb" value="${map.value}"/> --%>
+										<c:forEach var="verb" items="${map.value}" varStatus="loop">
+											<c:if test="${loop.last}">
+												<c:choose>
 
-										</c:when>
-										<c:otherwise>
-											<a class="new_inp_row_a" href="javascript:void(0)"><i
-												class="fa fa-plus" aria-hidden="true"></i></a>
-										</c:otherwise>
-									</c:choose>
-								</c:otherwise>
-							</c:choose>
+													<c:when test="${empty verb.date}">
 
+													</c:when>
+													<c:otherwise>
+														<c:choose>
+															<c:when test="${role=='ARC'}">
+
+																<c:choose>
+																	<c:when test="${descstatus=='yes'}">
+																		<a class="new_inp_row_a" href="javascript:void(0)"><i
+																			class="fa fa-plus" aria-hidden="true"></i></a>
+																	</c:when>
+																	<c:otherwise>
+																	</c:otherwise>
+																</c:choose>
+
+															</c:when>
+															<c:when
+																test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+																<c:choose>
+																	<c:when test="${descstatus=='yes'}">
+
+																	</c:when>
+																	<c:otherwise>
+																		<a class="new_inp_row_a" href="javascript:void(0)"><i
+																			class="fa fa-plus" aria-hidden="true"></i></a>
+																	</c:otherwise>
+																</c:choose>
+															</c:when>
+															<c:otherwise>
+																<a class="new_inp_row_a" href="javascript:void(0)"><i
+																	class="fa fa-plus" aria-hidden="true"></i></a>
+															</c:otherwise>
+														</c:choose>
+													</c:otherwise>
+												</c:choose>
+											</c:if>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
 						</div>
 					</form>
 				</div>
@@ -616,7 +783,7 @@
                     function clear_val(tbl_id) {
                         $("#" + tbl_id).find(".reason").val("");
                         $("#" + tbl_id).find(".error_msg").text("");
-                        $("#" + tbl_id + ' .exception option[value="No"]').attr("selected", "selected");
+                        $("#" + tbl_id + ' .exception').html("No");
                     }
 //                    clear values end
 
@@ -637,12 +804,12 @@
 //show new row end
 //change warnig status function beg
                     $(document).on('change', '.w_status', function () {
-                        if ($(this).val() == "Exception") {
+                        if ($(this).val() == "EXCEPTION") {
 //                            $(this).parent("th").siblings("th").children(".exception").prop("disabled", false);
-                            $(this).parent("th").siblings("th").children('.exception').val('Yes').trigger('change');
+                            $(this).parent("th").siblings("th").children('.exception').html('Yes');
                             $(this).parent("th").siblings("th").children('.reason').show();
                         } else {
-                            $(this).parent("th").siblings("th").children('.exception').val('No').trigger('change');
+                            $(this).parent("th").siblings("th").children('.exception').html('No');
                             $(this).parent("th").siblings("th").children('.reason').hide();
                         }
                     });
@@ -668,17 +835,18 @@
                         }
                         
                         var officeId=${officeNumber};
+                        var warningCycleId=${warningCycleId};
                         var warningNameId = $(this).parent('th').children('input').val();
                         $.ajax({
         					type : 'POST',
-        					url : "api/sop/warningStatus/",
+        					url : "/sop/warningStatus",
         					data : { officeId :officeId , warningName : warningNameId ,date :date , omWarningStatus : w_status ,
-        						exception :exception , exceptionReason : reason },
-        					dataType : 'json',
-        					async : true,
-        					success : function(result) {
-        						
-        						if(result.status == "success"){
+        						exception :exception , exceptionReason : reason, warningCycleId : warningCycleId },
+        					dataType : 'html',
+        					async : false,
+        					success : function(response) {
+        						console.debug(response);
+        						if(response == "success"){
         							//alert("faild");
         							t.row.add([
         	                            date,
@@ -688,7 +856,7 @@
         	                            '<a class="icn_oprn"><i class="fa fa-check" aria-hidden="true"></i></a>'
         	                        ]).draw(false);
         	//hide plus button when save received beg
-        	                        if (w_status == "Received") {
+        	                        if (w_status == "RECEIVED") {
         	                            $(this_event).closest("table").parents().children(".new_inp_row_a").hide();
         	                        }
         	//hide plus button when save received end

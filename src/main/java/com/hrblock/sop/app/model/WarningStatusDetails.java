@@ -1,5 +1,15 @@
 package com.hrblock.sop.app.model;
 
+/**
+ *  @author  Umesh Kumar M
+ *  @version     1.0
+ *  @since       1.0
+ *  Release Date: 
+ *  <p>
+ *  Revision History: 
+ * 
+ */ 
+
 public class WarningStatusDetails {
 
 	
@@ -10,6 +20,7 @@ public class WarningStatusDetails {
 	private int warningId;
 	private int omStepId;
 	private String warningName;
+	private int warningCycleId;
 	
 	public String getDate() {
 		return date;
@@ -52,6 +63,12 @@ public class WarningStatusDetails {
 	}
 	public void setWarningName(String warningName) {
 		this.warningName = warningName;
+	}
+	public int getWarningCycleId() {
+		return warningCycleId;
+	}
+	public void setWarningCycleId(int warningCycleId) {
+		this.warningCycleId = warningCycleId;
 	}
 	
 	

@@ -7,6 +7,7 @@ public class SOPUtil {
 	
 	/** Date formatter Constants **/
 	SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy");
-    SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat ymdFormat = new SimpleDateFormat("yyyy-MM-dd");
+    
 
 }

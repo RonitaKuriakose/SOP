@@ -3,6 +3,8 @@ package com.hrblock.sop.app.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,17 +13,25 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hrblock.sop.app.exception.SopCustomException;
 import com.hrblock.sop.app.model.SOPOffice;
-
 import com.hrblock.sop.app.model.SopMainDetails;
-
-
 import com.hrblock.sop.app.service.SOPService;
 
+/**
+ *  @author  Umesh Kumar M
+ *  @version     1.0
+ *  @since       1.0
+ *  Release Date: 
+ *  <p>
+ *  Revision History: 
+ * 
+ */ 
+
 @ComponentScan("com.hrblock.sop.app.service")
-@RestController
+@Controller
 @RequestMapping("")
 public class SOPController {
 
@@ -29,88 +39,103 @@ public class SOPController {
 	private SOPService service;
 
 	Logger log = Logger.getLogger(this.getClass());
-	String userName;
-	String role;
+	String userName,role,smUser,psID,firstName,lastName;
+	//String role;
+	//String smUser;
+	//String psID;
 
 	/** Method to fetch the data to load the initial data table **/
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(ModelMap model) {
-		userName= "Umesh Kumar M";  
-		role="DISTRICTMANAGER";
-		List<Integer>districtList= new ArrayList<Integer>();
-		districtList.add(1);
-		districtList.add(2);
-		districtList.add(15);
-		districtList.add(7);
-		districtList.add(10);
-		List<SopMainDetails> mainList = service.getMainInterface(districtList);
-		model.addAttribute("jsondata", mainList);
-		model.addAttribute("userName", userName);
-		model.addAttribute("role", role);
+	public String home(HttpServletRequest request,ModelMap model) throws SopCustomException {
+		userName = "Umesh Kumar M";
+		role = "DISTRICTMANAGER";
+		log.info("Entering SSO Integration process Controller");
+		try {
+			smUser=request.getHeader("SM_USER");
+			psID=request.getHeader("PSID");
+			firstName= request.getHeader("fName");
+			lastName= request.getHeader("lName");
+			List<Integer> districtList = new ArrayList<Integer>();
+			districtList.add(1);
+			districtList.add(2);
+			districtList.add(3);
+			districtList.add(4);
+			List<SopMainDetails> mainList = service.getMainInterface(districtList,smUser,psID);
+			model.addAttribute("jsondata", mainList);
+			model.addAttribute("userName", userName);
+			model.addAttribute("role", role);
+		} catch (Exception e) {
+			log.error("Exception occured at Integration process Controller: ",e);
+			//System.err.print(e);
+			//e.printStackTrace();
+			return "sop_error";
+		}
+		log.info("Existing SSO Integration process Controller");
 		return "sop_home";
 	}
 
-	/** Method to get the details with corresponding to search items **/
-
-	/*
-	 * @RequestMapping(value="/MySearch/{searchItem}", method = RequestMethod.GET)
-	 * public @ResponseBody String fetchSopSearchDetails(@PathVariable("searchItem")
-	 * String searchItem,ModelMap model){
-	 */
-
-	@RequestMapping(value = "/MySearch", method = RequestMethod.GET)
-	public String fetchSopSearchDetails(@RequestParam("filters") String filterValue,
-			@RequestParam("searchVal") String searchedValue, ModelMap model) {
-		ArrayList<SopMainDetails> searchList = service.getSearchDetails(filterValue, searchedValue);
-		model.addAttribute("jsondata", searchList);
-		return "sop_home";
-	}
+	/** Method to fetch the warning step details with corresponding to office id **/
 
 	@RequestMapping(value = "/officedetails", method = RequestMethod.GET)
-	public String fetchSopOfficeWarningDetails(@RequestParam("officeId") String officeId, ModelMap model) {
-		
+	public String fetchSopOfficeWarningDetails(@RequestParam("officeId") String officeId,@RequestParam("officeRowId") String officeRowId,
+			@RequestParam("omName") String omName,@RequestParam("warningCycleId") String warningCycleId,ModelMap model)
+			throws SopCustomException {
+		log.info("Entering office warning details fetching Controller");
 		SOPOffice sopOffice = new SOPOffice();
-		sopOffice=service.getWarningDetailsOfOffice(officeId);
-		model.addAttribute("officeNumber", officeId);
-		model.addAttribute("omName", sopOffice.getOmName());
-		model.addAttribute("verbal", sopOffice.getVerbalWarning());
-		model.addAttribute("written", sopOffice.getWrittenWarning());
-		model.addAttribute("finals", sopOffice.getFinalWarning());
-		model.addAttribute("decision", sopOffice.getDecision());
-		model.addAttribute("userName", userName);
-		model.addAttribute("role", role);
+		try {
+			sopOffice = service.getWarningDetailsOfOffice(officeId,officeRowId);
+			model.addAttribute("officeNumber", officeId);
+			model.addAttribute("omName", omName);
+			model.addAttribute("warningCycleId", warningCycleId);
+			model.addAttribute("sopOfficeDetails", sopOffice.getWarningListofOffice());
+			/*
+			 * model.addAttribute("verbal", sopOffice.getVerbalWarning());
+			 * model.addAttribute("written", sopOffice.getWrittenWarning());
+			 * model.addAttribute("finals", sopOffice.getFinalWarning());
+			 * model.addAttribute("decision", sopOffice.getDecision());
+			 */
+			model.addAttribute("userName", userName);
+			model.addAttribute("role", role);
+		} catch (Exception e) {
+			log.error("Exception occured at warning details fetching Controller: ",e);
+			//System.err.print(e);
+			e.printStackTrace();
+			return "sop_error";
+		}
+		log.info("Existing office warning details fetching Controller");
 		return "sop_warning";
 	}
+
+	/** updation of the warning status with corresponding to the office id and warning step**/
 	
-	/*@RequestMapping(value="/warningStatus", method= RequestMethod.POST)
-	public ResponseEntity<String> savingWarningStatus(@RequestParam("officeId") String officeId,
-			@RequestParam("warningName") String warningName,
-			@RequestParam("date")String date,@RequestParam("omWarningStatus")String omWarningStatus,
-			@RequestParam("exception") String exception,@RequestParam("exceptionReason")String exceptionReason,ModelMap model) {
+	
+	@RequestMapping(value = "/warningStatus", method = RequestMethod.POST)
+	public @ResponseBody String savingWarningStatus(@RequestParam("officeId") String officeId,
+			@RequestParam("warningName") String warningName, @RequestParam("date") String date,
+			@RequestParam("omWarningStatus") String omWarningStatus, @RequestParam("exception") String exception,
+			@RequestParam("exceptionReason") String exceptionReason,@RequestParam("warningCycleId") String warningCycleId) throws SopCustomException {
+
+		String result = "";
+		try {
+			log.info("Entering WarningStatus Updation Process Controller");
+
+			result = service.savingWarningStatus(officeId, warningName, date, omWarningStatus, exception,
+					exceptionReason,warningCycleId,psID);
+
+			log.info("Exiting WarningStatus Updation Process Controller");
+		} catch (Exception e) {
+			log.error("Exception occured at WarningStatus Updation Controller: ",e);
+			//System.err.print(e);
+			e.printStackTrace();
+			// return "sop_error";
+		}
+		if(result.equals("success")) {
+			return "success";
+		}else {
+			return "failure";
+		}
 		
-		String result= service.savingWarningStatus(officeId, warningName, date, omWarningStatus, exception, exceptionReason);
-		model.addAttribute("officeNumber", officeId);
-		return ResponseEntity.status(HttpStatus.OK).body("SUCCESS");
-	}*/
-
-	
-	public String getUserName() {
-		return userName;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-	
-	
-	
 }

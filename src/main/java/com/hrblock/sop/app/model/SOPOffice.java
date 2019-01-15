@@ -1,6 +1,18 @@
 package com.hrblock.sop.app.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+/**
+ *  @author  Umesh Kumar M
+ *  @version     1.0
+ *  @since       1.0
+ *  Release Date: 
+ *  <p>
+ *  Revision History: 
+ * 
+ */ 
 
 public class SOPOffice {
 
@@ -14,7 +26,7 @@ private List<WarningStatusDetails> verbalWarning;
 private List<WarningStatusDetails> writtenWarning;
 private List<WarningStatusDetails> finalWarning;
 private List<WarningStatusDetails> decision;
-
+private Map<String, List<WarningStatusDetails>> warningListofOffice = new HashMap<>();
 
 public Integer getOfficeID() {
 	return officeID;
@@ -78,6 +90,14 @@ public Integer getOmId() {
 
 public void setOmId(Integer omId) {
 	this.omId = omId;
+}
+
+public Map<String, List<WarningStatusDetails>> getWarningListofOffice() {
+	return warningListofOffice;
+}
+
+public void setWarningListofOffice(Map<String, List<WarningStatusDetails>> warningListofOffice) {
+	this.warningListofOffice = warningListofOffice;
 }
 
 

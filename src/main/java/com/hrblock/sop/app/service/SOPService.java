@@ -1,19 +1,25 @@
 package com.hrblock.sop.app.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.hrblock.sop.app.exception.SopCustomException;
 import com.hrblock.sop.app.model.SOPOffice;
 import com.hrblock.sop.app.model.SopMainDetails;
 
-
-
+/**
+ *  @author  Umesh Kumar M
+ *  @version     1.0
+ *  @since       1.0
+ *  Release Date: 
+ *  <p>
+ *  Revision History: 
+ * 
+ */ 
 
 public interface SOPService {
 
-	public List<SopMainDetails> getMainInterface(List<Integer> districtList);
-	public ArrayList<SopMainDetails> getSearchDetails(String filterValue,String searchedValue);
-	public SOPOffice getWarningDetailsOfOffice(String officeId);
-	public String savingWarningStatus(String officeId,String warningName,String date,String omWarningStatus,String exception,String exceptionReason);
+	public List<SopMainDetails> getMainInterface(List<Integer> districtList, String smUser, String psID) throws SopCustomException;
+	public SOPOffice getWarningDetailsOfOffice(String officeId, String officeRowId) throws SopCustomException;
+	public String savingWarningStatus(String officeId,String warningName,String date,String omWarningStatus,String exception,String exceptionReason, String warningCycleId, String psID) throws SopCustomException;
 	
 }

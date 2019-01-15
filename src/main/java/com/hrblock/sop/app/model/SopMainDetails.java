@@ -1,6 +1,14 @@
 package com.hrblock.sop.app.model;
 
-
+/**
+ *  @author  Umesh Kumar M
+ *  @version     1.0
+ *  @since       1.0
+ *  Release Date: 
+ *  <p>
+ *  Revision History: 
+ * 
+ */ 
 
 public class SopMainDetails {
 	
@@ -17,6 +25,9 @@ public class SopMainDetails {
 	private String comments;
 	private OmWarningStatus omWarningStatusBean;
 	private WarningStep warningStepBean;
+	private String omName;
+	private int accRowId;
+	private int warningCycleId;
 	
 	
 	public String getMarket() {
@@ -96,6 +107,24 @@ public class SopMainDetails {
 	}
 	public void setWarningStepName(String warningStepName) {
 		this.warningStepName = warningStepName;
+	}
+	public String getOmName() {
+		return omName;
+	}
+	public void setOmName(String omName) {
+		this.omName = omName;
+	}
+	public int getAccRowId() {
+		return accRowId;
+	}
+	public void setAccRowId(int accRowId) {
+		this.accRowId = accRowId;
+	}
+	public int getWarningCycleId() {
+		return warningCycleId;
+	}
+	public void setWarningCycleId(int warningCycleId) {
+		this.warningCycleId = warningCycleId;
 	}
 	
 	

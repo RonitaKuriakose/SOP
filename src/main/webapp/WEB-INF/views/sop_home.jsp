@@ -61,7 +61,8 @@
 			<%-- <img
 				src="<c:url value="/SMC/AMS/sop/resources/css/images/logo.png" />"
 				class="logo" /> --%>
-			<img src="<c:url value="/resources/css/images/logo.png" />" class="logo" />
+			<img src="<c:url value="/resources/css/images/logo.png" />"
+				class="logo" />
 		</div>
 
 		<div class="container-fluid sop_fluid m0p0">
@@ -84,6 +85,9 @@
 
 	</header>
 
+	<input type="hidden" id="headerDetails" name="headerDetails"
+		value="<%=request.getHeader("PSID")%>">
+
 	<div class="container-fluid bd_fluid m0p0">
 		<div class="sop_container">
 			<div class="card">
@@ -101,13 +105,14 @@
 								<option value="1">Region</option>
 								<option value="2">District</option>
 								<option value="3">Office</option>
-								<option value="4">OM Warning Status</option>
-								<option value="5">Last Updated</option>
+								<option value="4">OM Warning Step</option>
+								<option value="5">OM Warning Status</option>
+								<option value="6">Last Updated</option>
 							</select>
 							<h3 class="label_filer label_filer2">Search By:</h3>
 							<input type="text"
 								class="search_fil serrr form-control form-control-sm"
-								placeholder="Serarch">
+								placeholder="Search">
 						</div>
 
 						<table id="example" class="table table-striped table-bordered"
@@ -118,7 +123,9 @@
 									<th>Region</th>
 									<th>District</th>
 									<th>Office</th>
+									<th>OM Warning Step</th>
 									<th>OM Warning Status</th>
+									<th>Warning Cycle</th>
 									<th>Last Updated</th>
 								</tr>
 							</thead>
@@ -130,17 +137,19 @@
 										<td>${item.market}</td>
 										<td>${item.region}</td>
 										<td>${item.district}</td>
+										<td>${item.officeId}</td>
+										<td>${item.warningStepName}</td>
+										<td>${item.omWarningStatusName}</td>
 										<c:choose>
-											<c:when test="${item.omWarningStatusName=='On Path'}">
-												<td>${item.officeId}</td>
+											<c:when test="${item.warningCycleId=='0'}">
+												<td>NA</td>
 											</c:when>
 											<c:otherwise>
 												<td><a
-													href="/sop/officedetails?officeId=${item.officeId}">${item.officeId}</a></td>
+													href="/sop/officedetails?officeId=${item.officeId}&officeRowId=${item.accRowId}&omName=${item.omName}
+													&warningCycleId=${item.warningCycleId}">${item.warningCycleId}</a></td>
 											</c:otherwise>
 										</c:choose>
-
-										<td>${item.omWarningStatusName}</td>
 										<td>${item.lastUpdated}</td>
 									</tr>
 								</c:forEach>
@@ -200,91 +209,6 @@
 
 			});
 		</script>
-
-		<!-- <script>
-			$(document).ready(function() {
-				$('#sop_table').DataTable();
-
-			});
-
-			/* var SearchItem = function() {
-
-				/* var select_value = document.getElementById("category_select").value;
-				var entered_value = document.getElementById("user_search").value;
-				var searched_value = select_value + "_" + entered_value;
-				
-				$.ajax({
-					type : 'GET',
-					url : '/sop/MySearch/' + searched_value,
-					dataType : 'json',
-					async : true,
-					success : function(result) {
-						alert("success");
-					},
-					error : function() {
-						alert("error");
-					}
-				}); */
-
-				/* var filters = $("#filter_field option:selected").val();
-				var searchVal = $("#user_search").val();
-
-				alert(filters);
-				alert(searchVal);
-
-				//alert("The button was clicked.");
-
-				$.ajax({
-					url : "/sop/MySearch",
-					type : "GET",
-					data : "filters=" + filters + "&searchVal=" + searchVal,
-
-					success : function() {
-						alert("success");
-					},
-					error : function() {
-						alert("error");
-					}
-				});
-			} */
-			
-			 $(document).ready(function () {
-
-
-                 // DataTable
-                 var table = $('#example').DataTable();
-                 // Apply the search
-                 $('input.serrr').attr("data-id", $("#filter_field").val());
-                 $("#filter_field").change(function () {
-
-                     $('input.serrr').val("");
-                     var ser_str = "";
-                     var coloumn_index_ = $('input.serrr').attr("data-id");
-                     coloumn_index_ = parseInt(coloumn_index_);
-                     var that = table.columns(coloumn_index_);
-                     that.search(ser_str)
-                             .draw();
-
-                     $('input.serrr').attr("data-id", $(this).val());
-                 });
-
-                 $('input.serrr').keyup(function () {
-
-
-                     var ser_str = this.value;
-                     var coloumn_index_ = $('input.serrr').attr("data-id");
-                     coloumn_index_ = parseInt(coloumn_index_);
-                     var that = table.columns(coloumn_index_);
-                     that.search(ser_str)
-                             .draw();
-
-                 });
-
-
-
-             });
-			
-		</script> -->
 
 	</footer>
 
