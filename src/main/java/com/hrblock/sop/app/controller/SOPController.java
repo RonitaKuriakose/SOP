@@ -52,7 +52,8 @@ public class SOPController {
 		SOPOffice sopOffice = new SOPOffice();
 		try {
 			smUser=request.getHeader("SM_USER");
-			psID=request.getHeader("PSID");
+			/*psID=request.getHeader("PSID");*/
+			psID= "1001438";
 			firstName= request.getHeader("fName");
 			lastName= request.getHeader("lName");
 			userName = firstName+" "+lastName;

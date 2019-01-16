@@ -16,7 +16,7 @@
 <!-- <link rel="icon" type="image/icon" href="/images/favicon.ico" /> -->
 <%-- <link rel="icon" type="image/icon" href="<c:url value="/resources/css/images/favicon.ico" />" /> --%>
 <link rel="icon" type="image/icon"
-	href="<c:url value="/SMC/AMS/sop/resources/css/style.css" />" />
+	href="<c:url value="/resources/css/images/favicon.ico" />" />
 <!-- /SMC/AMS/sop/resources/css/style.css /resources/css/images/favicon.ico -->
 
 
@@ -40,9 +40,9 @@
 
 <!-- /SMC/AMS/sop/resources/css/style.css -->
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/style.css"> --%>
-<%-- <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />"> --%>
-<link rel="stylesheet"
-	href="<c:url value="/SMC/AMS/sop/resources/css/style.css" />">
+<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
+<%-- <link rel="stylesheet"
+	href="<c:url value="/SMC/AMS/sop/resources/css/style.css" />"> --%>
 <!-- /style.css -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -58,11 +58,11 @@
 	<header class="header_class">
 		<!--<div class="container">-->
 		<div class="col-sm-12 header_12 m0p0">
-			<img
+			<%-- <img
 				src="<c:url value="/SMC/AMS/sop/resources/css/images/logo.png" />"
-				class="logo" />
-			<%-- <img src="<c:url value="/resources/css/images/logo.png" />"
 				class="logo" /> --%>
+			<img src="<c:url value="/resources/css/images/logo.png" />"
+				class="logo" />
 		</div>
 
 		<div class="container-fluid sop_fluid m0p0">
