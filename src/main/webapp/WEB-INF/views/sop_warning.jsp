@@ -16,7 +16,7 @@
 <title></title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/icon"
-	href="<c:url value="/resources/css/images/favicon.ico" />" />
+	href="<c:url value="/SMC/AMS/sop/resources/css/images/favicon.ico" />" />
 <!-- /SMC/AMS/sop/resources/css/images/favicon.ico   /resources/css/images/favicon.ico -->
 
 
@@ -40,7 +40,7 @@
 
 
 
-<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
+<link rel="stylesheet" href="<c:url value="/SMC/AMS/sop/resources/css/style.css" />">
 <!-- /SMC/AMS/sop/resources/css/style.css    /resources/css/style.css -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -56,7 +56,7 @@
 	<header class="header_class">
 		<!--<div class="container">-->
 		<div class="col-sm-12 header_12 m0p0">
-			<img src="<c:url value="/resources/css/images/logo.png" />"
+			<img src="<c:url value="/SMC/AMS/sop/resources/css/images/logo.png" />"
 				class="logo" />
 			<!-- /SMC/AMS/sop/resources/css/images/logo.png    /resources/css/images/logo.png -->
 		</div>
@@ -138,7 +138,7 @@
 														<td>${verb.date}</td>
 														<td>${verb.omWarningStatus}</td>
 														<c:choose>
-															<c:when test="${verb.omWarningStatus eq 'Confirmed'}">
+															<c:when test="${verb.omWarningStatus eq 'CONFIRMED'}">
 																<c:set var="verbstatus" value="yes" />
 															</c:when>
 															<c:otherwise>
@@ -186,7 +186,7 @@
 													<c:when test="${role=='ARC'}">
 														<option value="RECEIVED">RECEIVED</option>
 													</c:when>
-													<c:when test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+													<c:when test="${(role=='DIRECTMANAGER') || (role=='RD')}">
 														<option value="CONFIRMED">CONFIRMED</option>
 														<option value="EXCEPTION">EXCEPTION</option>
 													</c:when>
@@ -195,8 +195,7 @@
 													</c:otherwise>
 												</c:choose>
 										</select></th>
-										<th><span class="exception">No</span>
-										<!-- <select disabled class="exception">
+										<th><span class="exception">No</span> <!-- <select disabled class="exception">
 												<option value="Yes">Yes</option>
 												<option selected value="No">No</option>
 										</select> --></th>
@@ -240,7 +239,7 @@
 
 															</c:when>
 															<c:when
-																test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+																test="${(role=='DIRECTMANAGER') || (role=='RD')}">
 																<c:choose>
 																	<c:when test="${verbstatus=='yes'}">
 
@@ -311,7 +310,7 @@
 														<td>${verb.date}</td>
 														<td>${verb.omWarningStatus}</td>
 														<c:choose>
-															<c:when test="${verb.omWarningStatus eq 'Confirmed'}">
+															<c:when test="${verb.omWarningStatus eq 'CONFIRMED'}">
 																<c:set var="writstatus" value="yes" />
 															</c:when>
 															<c:otherwise>
@@ -351,13 +350,17 @@
 													<c:when test="${role=='ARC'}">
 														<option value="RECEIVED">RECEIVED</option>
 													</c:when>
-													<c:otherwise>
+													<c:when test="${(role=='DIRECTMANAGER') || (role=='RD')}">
 														<option value="CONFIRMED">CONFIRMED</option>
 														<option value="EXCEPTION">EXCEPTION</option>
+													</c:when>
+													<c:otherwise>
+														<input disabled type="text" value="" class="textbox">
 													</c:otherwise>
 												</c:choose>
 										</select></th>
-										<th><span class="exception">No</span><!-- <select disabled class="exception">
+										<th><span class="exception">No</span>
+										<!-- <select disabled class="exception">
 												<option value="Yes">Yes</option>
 												<option selected value="No">No</option>
 										</select> --></th>
@@ -400,7 +403,7 @@
 
 															</c:when>
 															<c:when
-																test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+																test="${(role=='DIRECTMANAGER') || (role=='RD')}">
 																<c:choose>
 																	<c:when test="${writstatus=='yes'}">
 
@@ -468,7 +471,7 @@
 														<td>${verb.date}</td>
 														<td>${verb.omWarningStatus}</td>
 														<c:choose>
-															<c:when test="${verb.omWarningStatus eq 'Confirmed'}">
+															<c:when test="${verb.omWarningStatus eq 'CONFIRMED'}">
 																<c:set var="finalstatus" value="yes" />
 															</c:when>
 															<c:otherwise>
@@ -508,13 +511,17 @@
 													<c:when test="${role=='ARC'}">
 														<option value="RECEIVED">RECEIVED</option>
 													</c:when>
-													<c:otherwise>
+													<c:when test="${(role=='DIRECTMANAGER') || (role=='RD')}">
 														<option value="CONFIRMED">CONFIRMED</option>
 														<option value="EXCEPTION">EXCEPTION</option>
+													</c:when>
+													<c:otherwise>
+														<input disabled type="text" value="" class="textbox">
 													</c:otherwise>
 												</c:choose>
 										</select></th>
-										<th><span class="exception">No</span><!-- <select disabled class="exception">
+										<th><span class="exception">No</span>
+										<!-- <select disabled class="exception">
 												<option value="Yes">Yes</option>
 												<option selected value="No">No</option>
 										</select> --></th>
@@ -557,7 +564,7 @@
 
 															</c:when>
 															<c:when
-																test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+																test="${(role=='DIRECTMANAGER') || (role=='RD')}">
 																<c:choose>
 																	<c:when test="${finalstatus=='yes'}">
 
@@ -625,7 +632,7 @@
 														<td>${verb.date}</td>
 														<td>${verb.omWarningStatus}</td>
 														<c:choose>
-															<c:when test="${verb.omWarningStatus eq 'Confirmed'}">
+															<c:when test="${verb.omWarningStatus eq 'CONFIRMED'}">
 																<c:set var="descstatus" value="yes" />
 															</c:when>
 															<c:otherwise>
@@ -664,14 +671,21 @@
 													<c:when test="${role=='ARC'}">
 														<option value="RECEIVED">RECEIVED</option>
 													</c:when>
-													<c:otherwise>
-														<option value="CONFIRM-FIT FOR ROLE">CONFIRM-FIT FOR ROLE</option>
-														<option value="CONFIRM-KEEP COACHING">CONFIRM-KEEP COACHING</option>
+													<c:when test="${(role=='DIRECTMANAGER') || (role=='RD')}">
+														<option value="CONFIRM-FIT FOR ROLE">CONFIRM-FIT
+															FOR ROLE</option>
+														<option value="CONFIRM-KEEP COACHING">CONFIRM-KEEP
+															COACHING</option>
 														<option value="CONFIRM-TERMINATION">CONFIRM-TERMINATION</option>
+														<option value="EXCEPTION">EXCEPTION</option>
+													</c:when>
+													<c:otherwise>
+														<input disabled type="text" value="" class="textbox">
 													</c:otherwise>
 												</c:choose>
 										</select></th>
-										<th><span class="exception">No</span><!-- <select disabled class="exception">
+										<th><span class="exception">No</span>
+										<!-- <select disabled class="exception">
 												<option value="Yes">Yes</option>
 												<option selected value="No">No</option>
 										</select> --></th>
@@ -714,7 +728,7 @@
 
 															</c:when>
 															<c:when
-																test="${(role=='DISTRICTMANAGER') || (role=='RD')}">
+																test="${(role=='DIRECTMANAGER') || (role=='RD')}">
 																<c:choose>
 																	<c:when test="${descstatus=='yes'}">
 

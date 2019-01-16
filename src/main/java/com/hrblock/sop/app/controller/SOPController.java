@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hrblock.sop.app.exception.SopCustomException;
 import com.hrblock.sop.app.model.SOPOffice;
-import com.hrblock.sop.app.model.SopMainDetails;
 import com.hrblock.sop.app.service.SOPService;
 
 /**
@@ -48,28 +47,30 @@ public class SOPController {
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(HttpServletRequest request,ModelMap model) throws SopCustomException {
-		userName = "Umesh Kumar M";
-		role = "DISTRICTMANAGER";
+		//role = "DISTRICTMANAGER";
 		log.info("Entering SSO Integration process Controller");
+		SOPOffice sopOffice = new SOPOffice();
 		try {
 			smUser=request.getHeader("SM_USER");
 			psID=request.getHeader("PSID");
 			firstName= request.getHeader("fName");
 			lastName= request.getHeader("lName");
+			userName = firstName+" "+lastName;
 			List<Integer> districtList = new ArrayList<Integer>();
 			districtList.add(1);
 			districtList.add(2);
 			districtList.add(3);
 			districtList.add(4);
-			List<SopMainDetails> mainList = service.getMainInterface(districtList,smUser,psID);
-			model.addAttribute("jsondata", mainList);
+			sopOffice = service.getMainInterface(districtList,smUser,psID);
+			role=sopOffice.getRoleName();
+			model.addAttribute("jsondata", sopOffice.getSopMainDetails());
 			model.addAttribute("userName", userName);
 			model.addAttribute("role", role);
 		} catch (Exception e) {
 			log.error("Exception occured at Integration process Controller: ",e);
 			//System.err.print(e);
 			//e.printStackTrace();
-			return "sop_error";
+			return "sop_internalservererror";
 		}
 		log.info("Existing SSO Integration process Controller");
 		return "sop_home";
@@ -78,13 +79,13 @@ public class SOPController {
 	/** Method to fetch the warning step details with corresponding to office id **/
 
 	@RequestMapping(value = "/officedetails", method = RequestMethod.GET)
-	public String fetchSopOfficeWarningDetails(@RequestParam("officeId") String officeId,@RequestParam("officeRowId") String officeRowId,
+	public String fetchSopOfficeWarningDetails(@RequestParam("officeId") String officeId,
 			@RequestParam("omName") String omName,@RequestParam("warningCycleId") String warningCycleId,ModelMap model)
 			throws SopCustomException {
 		log.info("Entering office warning details fetching Controller");
 		SOPOffice sopOffice = new SOPOffice();
 		try {
-			sopOffice = service.getWarningDetailsOfOffice(officeId,officeRowId);
+			sopOffice = service.getWarningDetailsOfOffice(officeId);
 			model.addAttribute("officeNumber", officeId);
 			model.addAttribute("omName", omName);
 			model.addAttribute("warningCycleId", warningCycleId);
@@ -101,7 +102,7 @@ public class SOPController {
 			log.error("Exception occured at warning details fetching Controller: ",e);
 			//System.err.print(e);
 			e.printStackTrace();
-			return "sop_error";
+			return "sop_internalservererror";
 		}
 		log.info("Existing office warning details fetching Controller");
 		return "sop_warning";
@@ -128,7 +129,7 @@ public class SOPController {
 			log.error("Exception occured at WarningStatus Updation Controller: ",e);
 			//System.err.print(e);
 			e.printStackTrace();
-			// return "sop_error";
+			return "sop_internalservererror";
 		}
 		if(result.equals("success")) {
 			return "success";

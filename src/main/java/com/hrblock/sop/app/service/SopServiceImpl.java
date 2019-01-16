@@ -1,6 +1,5 @@
 package com.hrblock.sop.app.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.hrblock.sop.app.dao.SopDAO;
 import com.hrblock.sop.app.exception.SopCustomException;
 import com.hrblock.sop.app.model.SOPOffice;
-import com.hrblock.sop.app.model.SopMainDetails;
 
 /**
  *  @author  Umesh Kumar M
@@ -31,12 +29,13 @@ public class SopServiceImpl implements SOPService{
 	
 	/** fetch data from db corresponding to the user details  **/
 	
-	public List<SopMainDetails> getMainInterface(List<Integer> districtList,String smUser, String psID) throws SopCustomException{
+	public SOPOffice getMainInterface(List<Integer> districtList,String smUser, String psID) throws SopCustomException{
 		System.out.println("TestIMPL");
-		List<SopMainDetails> sopMainArray = new ArrayList<SopMainDetails>();
+		//List<SopMainDetails> sopMainArray = new ArrayList<SopMainDetails>();
+		SOPOffice sopOffice = new SOPOffice();
 		log.info("Entering SSO Integration process ServiceImpl");
 		try {
-			sopMainArray = sopDao.getSopMainDetails(districtList,smUser,psID);
+			sopOffice = sopDao.getSopMainDetails(districtList,smUser,psID);
 		}catch (Exception e) {
 			log.error("Exception occured at Integration process ServiceImpl: ",e);
 			//System.err.print(e);
@@ -44,17 +43,17 @@ public class SopServiceImpl implements SOPService{
 			throw new SopCustomException("Exception caught at ServiceImpl");
 		}
 		log.info("Existing SSO Integration process ServiceImpl");
-		return sopMainArray;
+		return sopOffice;
 	}
 
 	/** call to DAO reagrding the details of the warning status details for the office id **/
 	@Override
-	public SOPOffice getWarningDetailsOfOffice(String officeId,String officeRowId) throws SopCustomException{
+	public SOPOffice getWarningDetailsOfOffice(String officeId) throws SopCustomException{
 		
 		SOPOffice sopOffice = new SOPOffice();
 		log.info("Entering office warning details fetching ServiceImpl");
 		try {
-			sopOffice= sopDao.fetchWarningDetailsOfOffice(officeId,officeRowId);
+			sopOffice= sopDao.fetchWarningDetailsOfOffice(officeId);
 		}catch (Exception e) {
 			log.error("Exception occured at warning details fetching ServiceImpl: ",e);
 			//System.err.print(e);

@@ -16,7 +16,7 @@
 <!-- <link rel="icon" type="image/icon" href="/images/favicon.ico" /> -->
 <%-- <link rel="icon" type="image/icon" href="<c:url value="/resources/css/images/favicon.ico" />" /> --%>
 <link rel="icon" type="image/icon"
-	href="<c:url value="/resources/css/images/favicon.ico" />" />
+	href="<c:url value="/SMC/AMS/sop/resources/css/style.css" />" />
 <!-- /SMC/AMS/sop/resources/css/style.css /resources/css/images/favicon.ico -->
 
 
@@ -40,9 +40,9 @@
 
 <!-- /SMC/AMS/sop/resources/css/style.css -->
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/style.css"> --%>
-<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<%-- <link rel="stylesheet"
-	href="<c:url value="/SMC/AMS/sop/resources/css/style.css" />"> --%>
+<%-- <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />"> --%>
+<link rel="stylesheet"
+	href="<c:url value="/SMC/AMS/sop/resources/css/style.css" />">
 <!-- /style.css -->
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -58,11 +58,11 @@
 	<header class="header_class">
 		<!--<div class="container">-->
 		<div class="col-sm-12 header_12 m0p0">
-			<%-- <img
+			<img
 				src="<c:url value="/SMC/AMS/sop/resources/css/images/logo.png" />"
-				class="logo" /> --%>
-			<img src="<c:url value="/resources/css/images/logo.png" />"
 				class="logo" />
+			<%-- <img src="<c:url value="/resources/css/images/logo.png" />"
+				class="logo" /> --%>
 		</div>
 
 		<div class="container-fluid sop_fluid m0p0">
@@ -88,91 +88,106 @@
 	<input type="hidden" id="headerDetails" name="headerDetails"
 		value="<%=request.getHeader("PSID")%>">
 
-	<div class="container-fluid bd_fluid m0p0">
-		<div class="sop_container">
-			<div class="card">
-				<div class="card-header card-header-primary">
-					<h4 class="card-title ">Wireframe</h4>
-					<!--<p class="card-category"> Here is a subtitle for this table</p>-->
-				</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<div class="col-sm-12">
-							<h3 class="label_filer">Filter By:</h3>
-							<select id="filter_field"
-								class="filter_sel form-control form-control-sm">
-								<option value="0">Market</option>
-								<option value="1">Region</option>
-								<option value="2">District</option>
-								<option value="3">Office</option>
-								<option value="4">OM Warning Step</option>
-								<option value="5">OM Warning Status</option>
-								<option value="6">Last Updated</option>
-							</select>
-							<h3 class="label_filer label_filer2">Search By:</h3>
-							<input type="text"
-								class="search_fil serrr form-control form-control-sm"
-								placeholder="Search">
-						</div>
 
-						<table id="example" class="table table-striped table-bordered"
-							style="width: 100%">
-							<thead>
-								<tr>
-									<th>Market</th>
-									<th>Region</th>
-									<th>District</th>
-									<th>Office</th>
-									<th>OM Warning Step</th>
-									<th>OM Warning Status</th>
-									<th>Warning Cycle</th>
-									<th>Last Updated</th>
-								</tr>
-							</thead>
-							<tbody>
-
-
-								<c:forEach var="item" items="${jsondata}">
-									<tr>
-										<td>${item.market}</td>
-										<td>${item.region}</td>
-										<td>${item.district}</td>
-										<td>${item.officeId}</td>
-										<td>${item.warningStepName}</td>
-										<td>${item.omWarningStatusName}</td>
-										<c:choose>
-											<c:when test="${item.warningCycleId=='0'}">
-												<td>NA</td>
-											</c:when>
-											<c:otherwise>
-												<td><a
-													href="/sop/officedetails?officeId=${item.officeId}&officeRowId=${item.accRowId}&omName=${item.omName}
-													&warningCycleId=${item.warningCycleId}">${item.warningCycleId}</a></td>
-											</c:otherwise>
-										</c:choose>
-										<td>${item.lastUpdated}</td>
-									</tr>
-								</c:forEach>
-
-
-							</tbody>
-
-						</table>
+	<c:choose>
+		<c:when test="${empty jsondata}">
+			<div class="container-fluid m0p0">
+				<div class="_IntErr_parent">
+					<div class="">
+						<h1 class="_IntErr">
+							Your account cannot be found in SOP. <br>Please
+							contact your manager and ensure that you are hired into a job
+							code that allows for access.
+						</h1>
 					</div>
+
+
+				</div>
+			</div>
+		</c:when>
+		
+		
+		<c:otherwise>
+			<div class="container-fluid bd_fluid m0p0">
+				<div class="sop_container">
+					<div class="card">
+						<div class="card-header card-header-primary">
+							<h4 class="card-title ">Wireframe</h4>
+							<!--<p class="card-category"> Here is a subtitle for this table</p>-->
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<div class="col-sm-12">
+									<h3 class="label_filer">Filter By:</h3>
+									<select id="filter_field"
+										class="filter_sel form-control form-control-sm">
+										<option value="0">Market</option>
+										<option value="1">Region</option>
+										<option value="2">District</option>
+										<option value="3">Office</option>
+										<option value="4">OM Warning Step</option>
+										<option value="5">OM Warning Status</option>
+										<option value="6">Last Updated</option>
+									</select>
+									<h3 class="label_filer label_filer2">Search By:</h3>
+									<input type="text"
+										class="search_fil serrr form-control form-control-sm"
+										placeholder="Search">
+								</div>
+
+								<table id="example" class="table table-striped table-bordered"
+									style="width: 100%">
+									<thead>
+										<tr>
+											<th>Market</th>
+											<th>Region</th>
+											<th>District</th>
+											<th>Office</th>
+											<th>OM Warning Step</th>
+											<th>OM Warning Status</th>
+											<th>Warning Cycle</th>
+											<th>Last Updated</th>
+										</tr>
+									</thead>
+									<tbody>
+
+
+										<c:forEach var="item" items="${jsondata}">
+											<tr>
+												<td>${item.market}</td>
+												<td>${item.region}</td>
+												<td>${item.district}</td>
+												<td>${item.officeId}</td>
+												<td>${item.warningStepName}</td>
+												<td>${item.omWarningStatusName}</td>
+												<c:choose>
+													<c:when test="${item.warningCycleId=='0'}">
+														<td>NA</td>
+													</c:when>
+													<c:otherwise>
+														<td><a
+															href="/sop/officedetails?officeId=${item.officeId}&omName=${item.omName}
+													&warningCycleId=${item.warningCycleId}">${item.warningCycleId}</a></td>
+													</c:otherwise>
+												</c:choose>
+												<td>${item.lastUpdated}</td>
+											</tr>
+										</c:forEach>
+
+
+									</tbody>
+
+								</table>
+							</div>
+						</div>
+					</div>
+
+
 				</div>
 			</div>
 
-
-		</div>
-	</div>
-
-
-
-
-
-
-
-
+		</c:otherwise>
+	</c:choose>
 	<footer>
 
 

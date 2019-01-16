@@ -1,6 +1,7 @@
 package com.hrblock.sop.app.dao;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -27,7 +28,6 @@ import com.hrblock.sop.app.model.SOPOffice;
 import com.hrblock.sop.app.model.SopMainDetails;
 import com.hrblock.sop.app.model.WarningStatusDetails;
 import com.hrblock.sop.app.rowmapper.OfficeWarningDetailRowMapper;
-import com.hrblock.sop.app.rowmapper.SopMainDetailRowMapper;
 
 /**
  *  @author  Umesh Kumar M
@@ -73,70 +73,68 @@ public class SopDAOImpl implements SopDAO {
 	/** fetch office lists from db corresponding to the user details  **/
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SopMainDetails> getSopMainDetails(List<Integer> districtList,String smUser, String psID) throws SopCustomException{
+	public SOPOffice getSopMainDetails(List<Integer> districtList,String smUser, String psID) throws SopCustomException{
 		
 		List<SopMainDetails> sopMainDetails= new ArrayList<>();
+		List<SopMainDetails> sopMainDetails2= new ArrayList<>();
+		SOPOffice sopOffice = new SOPOffice();
+		String resultRole;
 		log.info("Entering SSO Integration process DaoImpl");
 		try {
 			MapSqlParameterSource parameters = new MapSqlParameterSource();
 			parameters.addValue("districtlist", districtList);
 
-			sopMainDetails = npJdbcTemplate.query(getSQL(), parameters,
-					new SopMainDetailRowMapper());
+			/*sopMainDetails = npJdbcTemplate.query(getSQL(), parameters,
+					new SopMainDetailRowMapper());*/
 			
 			//Procedure usage starts
 			
-			SqlParameterSource in = new MapSqlParameterSource().addValue("p_DISTRICT_ID", 1);
+			SqlParameterSource in = new MapSqlParameterSource().addValue("P_PSFT_ID", psID);
 			 
-			simpleJdbcCall.withProcedureName("FETCH_DATA");
+			simpleJdbcCall.withProcedureName("SOP_GET_OFFICE_LIST_PROC");
 			
 			Map<String, Object> procedureResultSet = simpleJdbcCall.execute(in);
 			
-			List<SopMainDetails> sopMainDetails2= new ArrayList<>();
+			//List<SopMainDetails> sopMainDetails2= new ArrayList<>();
 			
-			List<LinkedCaseInsensitiveMap<Object>> resultSet = (List<LinkedCaseInsensitiveMap<Object>>) procedureResultSet.get("P_CURSOR");
+			resultRole= (String) procedureResultSet.get("P_ROLE_NM");
+			if(resultRole.equals("I")) {
+				sopMainDetails2.add(null);
+			}else {
+			
+			List<LinkedCaseInsensitiveMap<Object>> resultSet = (List<LinkedCaseInsensitiveMap<Object>>) procedureResultSet.get("P_REF_RESULT OUT");
 		
 			for(LinkedCaseInsensitiveMap<Object> sopMainDetail :resultSet) {
 				SopMainDetails details = new SopMainDetails();
+				//details.setMarket((sopMainDetail.get("p_MARKET_NM").toString()));
+				//details.setRegion((sopMainDetail.get("p_REGION_NM")).toString());
+				SimpleDateFormat mdyFormat = new SimpleDateFormat("MM-dd-yyyy");
+				 Date lastUpdateDate = (Date) sopMainDetail.get("LAST_UPDATED_TS");
+				String lastUpdatedStr = mdyFormat.format(lastUpdateDate.getTime());
+				details.setLastUpdated(lastUpdatedStr);
 				
 				details.setOfficeId(((BigDecimal)sopMainDetail.get("OFFICE_GL_DEPT_ID")).intValue());
-				details.setAccRowId(((BigDecimal)sopMainDetail.get("ACC_ROW_NO")).intValue());
+				//details.setAccRowId(((BigDecimal)sopMainDetail.get("ACC_ROW_NO")).intValue());
+				details.setMarketId(((BigDecimal)sopMainDetail.get("MARKET_ID")).intValue());
 				details.setMarket((sopMainDetail.get("MARKET_NM").toString()));
+				details.setRegionId(((BigDecimal)sopMainDetail.get("REGION_ID")).intValue());
 				details.setRegion((sopMainDetail.get("REGION_NM")).toString());
+				details.setDistrictId(((BigDecimal)sopMainDetail.get("DISTRICT_ID")).intValue());
 				details.setDistrict((sopMainDetail.get("DISTRICT_NM")).toString());
 				details.setWarningStepName((sopMainDetail.get("WARNING_STEP_NM")).toString());
 				details.setOmWarningStatusName((sopMainDetail.get("WARNING_STATUS_NM")).toString());
 				details.setOmName((sopMainDetail.get("OFFICE_MGR_NM")).toString());
 				details.setOfficeId(((BigDecimal)sopMainDetail.get("OFFICE_GL_DEPT_ID")).intValue());
-				/*java.util.Date newDate = sopMainDetail.get("LAST_UPDATED_TS");
-				String dateVal = mdyFormat.format(newDate);
-				sopMainDetailsBean.setLastUpdated(dateVal);*/
 				details.setWarningCycleId(((BigDecimal)sopMainDetail.get("WARNING_CYCLE_ID")).intValue());
+				
 				
 				sopMainDetails2.add(details);
 			}
 			
 			System.out.println(sopMainDetails2);
-			
-		
-			
-			/*
-	
-	
-	 SimpleJdbcCall jdbcCall = new 
-         SimpleJdbcCall(dataSource).withProcedureName("getRecord");
-
-      SqlParameterSource in = new MapSqlParameterSource().addValue("in_id", id);
-      Map<String, Object> out = jdbcCall.execute(in);
-
-      Student student = new Student();
-      student.setId(id);
-      student.setName((String) out.get("out_name"));
-      student.setAge((Integer) out.get("out_age"));
-      return student;      
-      
-      
-      */
+			sopOffice.setSopMainDetails(sopMainDetails2);
+			sopOffice.setRoleName(resultRole);
+			}
 			
 		}catch (Exception e) {
 			log.error("Exception occured at Integration process DaoImpl: ",e);
@@ -145,7 +143,7 @@ public class SopDAOImpl implements SopDAO {
 			throw new SopCustomException("Exception caught at DAOImpl");
 		}
 		log.info("Existing SSO Integration process DaoImpl");
-		return sopMainDetails;
+		return sopOffice;
 	}
 
 	private String getSQL() {
@@ -163,7 +161,7 @@ public class SopDAOImpl implements SopDAO {
 	/**  fetching the details of the warning status details for the office id **/
 	
 	@Override
-	public SOPOffice fetchWarningDetailsOfOffice(String officeId,String officeRowId) throws SopCustomException{
+	public SOPOffice fetchWarningDetailsOfOffice(String officeId) throws SopCustomException{
 		
 		SOPOffice sopOffice = new SOPOffice();
 		Map<String, List<WarningStatusDetails>> warningListofOffice = new HashMap<>();
@@ -182,14 +180,7 @@ public class SopDAOImpl implements SopDAO {
 			
 			List<WarningStatusDetails> warningDetails =  npJdbcTemplate.query(getWarningSQL(), parameters,
 					new OfficeWarningDetailRowMapper());
-			/*List<WarningStatusDetails> writtenWarningDetails =  npJdbcTemplate.query(getWarningSQL(written), parameters,
-					new OfficeWarningDetailRowMapper());
-			List<WarningStatusDetails> finalWarningDetails =  npJdbcTemplate.query(getWarningSQL(finalw), parameters,
-					new OfficeWarningDetailRowMapper());
-			List<WarningStatusDetails> decisionWarningDetails =  npJdbcTemplate.query(getWarningSQL(decision), parameters,
-					new OfficeWarningDetailRowMapper());
-			*/
-			
+						
 			sopOffice.setOfficeID(Integer.parseInt(officeId));
 			//sopOffice.setOmName("HnR");
 			
@@ -283,8 +274,8 @@ public class SopDAOImpl implements SopDAO {
 		sqlQuery.append("SELECT hscs.UPDATED_TS as dates,hsows.WARNING_STATUS_NM as omWarStatus,hscs.WARNING_CYCLE_ID as warningCycle, ");
 		sqlQuery.append("hscs.EXCEPTION_REASON_TXT as exceptionReason,hsws.WARNING_STEP_NM as warnings,hsws.WARNING_STEP_ID as warningid,hsows.WARNING_STATUS_ID as omStepid ");
 		sqlQuery.append(" FROM HRB_SOP_CURRENT_STATUS hscs ");
-		sqlQuery.append("JOIN HRB_SOP_WARNING_STATUS hsows ON (hsows.warning_status_id = hscs.om_warning_statusid) ");
-		sqlQuery.append("JOIN HRB_SOP_WARNING_STEP hsws ON (hsws.warning_stepid = hscs.om_warning_stepid) ");
+		sqlQuery.append("JOIN HRB_SOP_WARNING_STATUS hsows ON (hsows.WARNING_STATUS_ID = hscs.WARNING_STATUS_ID) ");
+		sqlQuery.append("JOIN HRB_SOP_WARNING_STEP hsws ON (hsws.WARNING_STEP_ID = hscs.WARNING_STEP_ID) ");
 		sqlQuery.append("WHERE hscs.OFFICE_GL_DEPT_ID= :officeId AND hsws.WARNING_STEP_ID IN (:warning)");
 		//sqlQuery.append(warning);
 		return sqlQuery.toString();
@@ -316,23 +307,33 @@ public class SopDAOImpl implements SopDAO {
 				warningStatusId=7;
 			}
 			MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+			 namedParameters.addValue("status", 2);
 			 namedParameters.addValue("officeId", Integer.valueOf(officeId));
 			 namedParameters.addValue("warningCycleId", Integer.valueOf(warningCycleId));
 			 namedParameters.addValue("omWarningStatus", warningStatusId);
 			 namedParameters.addValue("warningName", Integer.valueOf(warningName));
 			 namedParameters.addValue("exceptionReason", exceptionReason);
-			 namedParameters.addValue("user", psID);
+			 namedParameters.addValue("user", 12345);
 			 namedParameters.addValue("dates", new Date());
 			int row = npJdbcTemplate.update(insertSql(), namedParameters);
 			if(row >=1) {
 				MapSqlParameterSource namedParam = new MapSqlParameterSource();
 				namedParam.addValue("warningName", Integer.valueOf(warningName));
 				namedParam.addValue("omWarningStatus", warningStatusId);
+				namedParameters.addValue("dates", new Date());
 				namedParam.addValue("officeId", Integer.valueOf(officeId));
 				namedParam.addValue("warningCycleId", Integer.valueOf(warningCycleId));
 				
 				int updatedRows = npJdbcTemplate.update(updateAccountabilitySql(), namedParam);
 				if(updatedRows >=1) {
+					if(warningStatusId==4) {
+						SqlParameterSource inn = new MapSqlParameterSource().addValue("P_OFFICE_GL_DEPT_ID", Integer.valueOf(officeId)).addValue("P_WARNING_CYCLE_ID", Integer.valueOf(warningCycleId))
+								.addValue("P_WARNING_STEP_ID", Integer.valueOf(warningName)).addValue("P_WARNING_STATUS_ID", warningStatusId);
+						 
+						simpleJdbcCall.withProcedureName("SOP_DLT_DECISION_RECEIVED");
+						
+						Map<String, Object> procedureResultSet = simpleJdbcCall.execute(inn);
+					}
 					result= "success";
 				}else {
 					result= "failure";
@@ -353,14 +354,14 @@ public class SopDAOImpl implements SopDAO {
 	
 	private String insertSql() {
 		StringBuilder sqlQuery = new StringBuilder();
-		sqlQuery.append("INSERT INTO hrb_sop_current_status(OFFICE_GL_DEPT_ID,WARNING_CYCLE_ID,WARNING_STEP_ID,WARNING_STATUS_ID,EXCEPTION_REASON_TXT,LAST_UPDATED_USER_ID,UPDATED_TS) "); 
-		sqlQuery.append("VALUES (:officeId,:warningCycleId,:warningName,:omWarningStatus,:exceptionReason,:user,:dates)");
+		sqlQuery.append("INSERT INTO hrb_sop_current_status(STATUS_ROW_NO,OFFICE_GL_DEPT_ID,WARNING_CYCLE_ID,WARNING_STEP_ID,WARNING_STATUS_ID,EXCEPTION_REASON_TXT,LAST_UPDATED_USER_ID,UPDATED_TS) "); 
+		sqlQuery.append("VALUES (:status,:officeId,:warningCycleId,:warningName,:omWarningStatus,:exceptionReason,:user,:dates)");
 		return sqlQuery.toString();
 	}
 	
 	private String updateAccountabilitySql() {
 		StringBuilder sqlQuery = new StringBuilder();
-		sqlQuery.append("UPDATE HRB_SOP_ACCOUNTABILITY SET WARNING_STEP_ID= :warningName ,WARNING_STATUS_ID= :omWarningStatus ");
+		sqlQuery.append("UPDATE HRB_SOP_ACCOUNTABILITY SET WARNING_STEP_ID= :warningName ,WARNING_STATUS_ID= :omWarningStatus,LAST_UPDATED_TS= :dates");
 		sqlQuery.append("WHERE OFFICE_GL_DEPT_ID=:officeId AND WARNING_CYCLE_ID= :warningCycleId ");
 		return sqlQuery.toString();
 	}

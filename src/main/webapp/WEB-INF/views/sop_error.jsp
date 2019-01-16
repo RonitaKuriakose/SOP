@@ -14,7 +14,8 @@
         <title></title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <%-- <link rel="icon" type="image/icon" href="<c:url value="/resources/css/images/favicon.ico" />"/> --%>
-        <link rel="icon" type="image/icon" href="<c:url value="/resources/css/images/favicon.ico" />" />
+        <link rel="icon" type="image/icon" href="<c:url value="/SMC/AMS/sop/resources/css/images/favicon.ico" />" />
+        <!-- /SMC/AMS/sop/resources/css/images/favicon.ico   /resources/css/images/favicon.ico -->
 
 
 
@@ -33,8 +34,8 @@
 
 
 
-       <%--  <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />"> --%>
-       <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
+      <!-- /SMC/AMS/sop/resources/css/style.css    /resources/css/style.css -->
+       <link rel="stylesheet" href="<c:url value="/SMC/AMS/sop/resources/css/style.css" />">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
@@ -47,8 +48,8 @@
         <header class="header_class">
             <!--<div class="container">-->
             <div class="col-sm-12 header_12 m0p0">
-                <%-- <img src="<c:url value="/resources/css/images/logo.png" />" class="logo" /> --%>
-                <img src="<c:url value="/resources/css/images/logo.png" />" class="logo" />
+               <!-- /SMC/AMS/sop/resources/css/images/logo.png    /resources/css/images/logo.png -->
+                <img src="<c:url value="/SMC/AMS/sop/resources/css/images/logo.png" />" class="logo" />
             </div>
 
             <div class="container-fluid sop_fluid m0p0">
@@ -73,7 +74,7 @@
                 <div class="">
                    
                     <h1 class="_404"><label>404</label> PAGE NOT FOUND</h1>
-                    <a href="#" class="return_home">Return to Home</a>
+                    <a href="/sop/home" class="return_home">Return to Home</a>
 
                 </div>
 

@@ -171,15 +171,17 @@ body{
 #warning_p .card-header{
     position: relative;
 }
-#warning_p .plus_ahref i.fa{
 
-}
 #warning_p .reason{
 	
 	margin: 0px; 
 	width: 347px; 
 	height: 78px;
 	
+}
+
+#warning_p .plus_ahref i.fa{
+
 }
 #warning_p .plus_ahref{
     position: absolute;
@@ -245,7 +247,32 @@ body{
     font-size: 16px;
 }
 
+._IntErr_parent{
+    width: 700px;
+    margin: auto;
+    height: 500px;
+    background: #fff;
+    border-radius: 10px;
+    margin-top: 100px;
+    box-shadow: 4px 8px 11px 0 #ccc;
+    text-align: center;
+}
 
+._IntErr{
+    text-align: center;
+    padding-top: 180px;
+    color: #999;
+    font-size: 28px;
+    margin-bottom: 22px;
+}
+._IntErr_parent .return_home{
+    text-decoration: none !important;
+    background: #7cc242;
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 4px;
+    box-shadow: 4px 8px 11px 0 #ccc;
+}
 
 
 
@@ -271,12 +298,20 @@ body{
 
 @media screen and (max-width: 720px) {
 
-    ._404_parent{
+    ._IntErr_parent{
         width: 85%;
         height: 200px;
         margin-top: 55px;   
     }
-    ._404 {
+    ._IntErr {
+        padding-top: 12px;
+    }
+    ._IntErr_parent{
+        width: 85%;
+        height: 200px;
+        margin-top: 55px;   
+    }
+    ._IntErr {
         padding-top: 12px;
     }
 

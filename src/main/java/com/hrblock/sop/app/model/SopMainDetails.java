@@ -28,6 +28,9 @@ public class SopMainDetails {
 	private String omName;
 	private int accRowId;
 	private int warningCycleId;
+	private int marketId;
+	private int regionId;
+	private int districtId;
 	
 	
 	public String getMarket() {
@@ -125,6 +128,24 @@ public class SopMainDetails {
 	}
 	public void setWarningCycleId(int warningCycleId) {
 		this.warningCycleId = warningCycleId;
+	}
+	public int getMarketId() {
+		return marketId;
+	}
+	public void setMarketId(int marketId) {
+		this.marketId = marketId;
+	}
+	public int getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(int regionId) {
+		this.regionId = regionId;
+	}
+	public int getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(int districtId) {
+		this.districtId = districtId;
 	}
 	
 	

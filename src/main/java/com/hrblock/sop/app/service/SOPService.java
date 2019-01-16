@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.hrblock.sop.app.exception.SopCustomException;
 import com.hrblock.sop.app.model.SOPOffice;
-import com.hrblock.sop.app.model.SopMainDetails;
 
 /**
  *  @author  Umesh Kumar M
@@ -18,8 +17,8 @@ import com.hrblock.sop.app.model.SopMainDetails;
 
 public interface SOPService {
 
-	public List<SopMainDetails> getMainInterface(List<Integer> districtList, String smUser, String psID) throws SopCustomException;
-	public SOPOffice getWarningDetailsOfOffice(String officeId, String officeRowId) throws SopCustomException;
+	public SOPOffice getMainInterface(List<Integer> districtList, String smUser, String psID) throws SopCustomException;
+	public SOPOffice getWarningDetailsOfOffice(String officeId) throws SopCustomException;
 	public String savingWarningStatus(String officeId,String warningName,String date,String omWarningStatus,String exception,String exceptionReason, String warningCycleId, String psID) throws SopCustomException;
 	
 }

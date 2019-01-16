@@ -1,5 +1,6 @@
 package com.hrblock.sop.app.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ private List<WarningStatusDetails> writtenWarning;
 private List<WarningStatusDetails> finalWarning;
 private List<WarningStatusDetails> decision;
 private Map<String, List<WarningStatusDetails>> warningListofOffice = new HashMap<>();
+private List<SopMainDetails> sopMainDetails= new ArrayList<>();
+private String roleName;
 
 public Integer getOfficeID() {
 	return officeID;
@@ -98,6 +101,22 @@ public Map<String, List<WarningStatusDetails>> getWarningListofOffice() {
 
 public void setWarningListofOffice(Map<String, List<WarningStatusDetails>> warningListofOffice) {
 	this.warningListofOffice = warningListofOffice;
+}
+
+public List<SopMainDetails> getSopMainDetails() {
+	return sopMainDetails;
+}
+
+public void setSopMainDetails(List<SopMainDetails> sopMainDetails) {
+	this.sopMainDetails = sopMainDetails;
+}
+
+public String getRoleName() {
+	return roleName;
+}
+
+public void setRoleName(String roleName) {
+	this.roleName = roleName;
 }
 
 
